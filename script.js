@@ -357,8 +357,9 @@ function openVideo(url) {
         iframe.src = embedUrl;
     }
     
+    }
+    
     document.getElementById('video-modal').classList.remove('hidden');
-}
 }
 
 // Verificar token na URL (retorno do OAuth)
