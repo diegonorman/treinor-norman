@@ -61,15 +61,19 @@
                 </button>
             </nav>
 
+            <div class="workout-days-section">
+                <span style="font-size: 12px; font-weight: bold; color: #333; margin-bottom: 8px; display: block;">Dias de Treino</span>
+                <div class="workout-days">
+                    <div class="workout-day-box active" onclick="showDay(1)">SEG</div>
+                    <div class="workout-day-box" onclick="showDay(2)">TER</div>
+                    <div class="workout-day-box" onclick="showDay(3)">QUA</div>
+                    <div class="workout-day-box" onclick="showDay(4)">QUI</div>
+                    <div class="workout-day-box" onclick="showDay(5)">SEX</div>
+                </div>
+            </div>
+
             <!-- Seção de Treinos -->
             <div id="workout-section" class="section active">
-                <div class="workout-nav">
-                    <button class="workout-btn active" onclick="showDay(1)">Dia 1</button>
-                    <button class="workout-btn" onclick="showDay(2)">Dia 2</button>
-                    <button class="workout-btn" onclick="showDay(3)">Dia 3</button>
-                    <button class="workout-btn" onclick="showDay(4)">Dia 4</button>
-                    <button class="workout-btn" onclick="showDay(5)">Dia 5</button>
-                </div>
                 <div class="workout-day" id="workout-container">
                     <!-- Exercícios serão carregados aqui -->
                 </div>
@@ -372,5 +376,6 @@
                 <button onclick="closeHistory()" class="close-history">✕</button>
                 <h3>📅 Histórico de Treinos</h3>
                 <div id="history-list"></div>
+                <button class="clear-history-btn" onclick="clearHistory()">🗑️ Limpar Histórico</button>
             </div>
         </div>

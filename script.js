@@ -31,10 +31,11 @@ function showDay(day) {
     container.style.opacity = '0.5';
     container.style.transform = 'translateY(20px)';
     
-    document.querySelectorAll('.workout-btn').forEach(btn => {
+    // Atualizar botões dos dias de treino
+    document.querySelectorAll('.workout-day-box').forEach(btn => {
         btn.classList.remove('active');
     });
-    document.querySelector(`[onclick="showDay(${day})"]`).classList.add('active');
+    document.querySelectorAll('.workout-day-box')[day - 1].classList.add('active');
     
     // Simular loading e depois mostrar conteúdo
     setTimeout(() => {
@@ -197,6 +198,9 @@ function startTimer(restTime) {
     const existing = document.getElementById('floating-timer');
     if (existing) existing.remove();
     
+    // Bloquear interações
+    document.body.style.pointerEvents = 'none';
+    
     // Criar cronômetro flutuante
     const timer = document.createElement('div');
     timer.id = 'floating-timer';
@@ -217,12 +221,13 @@ function startTimer(restTime) {
         z-index: 1000;
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         font-family: Arial, sans-serif;
+        pointer-events: auto;
     `;
     
     timer.innerHTML = `
         <div style="font-size: 24px; font-weight: bold; color: #4CAF50;">${formatTime(timeInSeconds)}</div>
         <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Descanso</div>
-        <button onclick="this.parentElement.remove(); clearInterval(timerInterval);" style="
+        <button onclick="this.parentElement.remove(); clearInterval(timerInterval); document.body.style.pointerEvents = 'auto';" style="
             position: absolute;
             top: 5px;
             right: 8px;
@@ -248,6 +253,7 @@ function startTimer(restTime) {
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
             timer.remove();
+            document.body.style.pointerEvents = 'auto';
             showNotification('Tempo de descanso acabou! 💪');
         }
     }, 1000);
@@ -264,6 +270,7 @@ function closeTimer() {
     clearInterval(timerInterval);
     const timer = document.getElementById('floating-timer');
     if (timer) timer.remove();
+    document.body.style.pointerEvents = 'auto';
 }
 
 function showNotification(message) {
@@ -709,6 +716,15 @@ function renderHistory() {
                 </div>
             `;
         }).join('');
+}
+
+function clearHistory() {
+    if (confirm('Deseja limpar TODO o histórico? Esta ação não pode ser desfeita.')) {
+        monthlyHistory = {};
+        localStorage.setItem('monthlyHistory', JSON.stringify(monthlyHistory));
+        renderHistory();
+        showNotification('Histórico limpo! 🗑️');
+    }
 }
 document.addEventListener('DOMContentLoaded', function() {
     loadWorkoutData();
