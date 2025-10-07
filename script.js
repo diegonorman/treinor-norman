@@ -332,15 +332,13 @@ function openVideo(url) {
     
     if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
-        const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
         
-        // Usar URL direta com API Key como parâmetro
-        const directUrl = `https://drive.google.com/uc?id=${fileId}&key=${GOOGLE_API_KEY}&export=download`;
+        // Usar iframe embed simples (funciona melhor)
+        const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
         
-        iframe.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        videoPlayer.src = directUrl;
-        videoPlayer.load();
+        videoPlayer.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = embedUrl;
     } else {
         // YouTube continua igual
         let embedUrl = url;
