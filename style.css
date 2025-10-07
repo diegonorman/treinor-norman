@@ -1915,22 +1915,20 @@ main {
 
 .weekly-progress {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     margin: 10px 10px 0 10px;
     padding: 10px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    gap: 20px;
+    gap: 15px;
 }
 
 .week-buttons {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    /* Manter botões dentro do header no iPhone */
-    margin-bottom: 0;
-    padding-bottom: 0;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
 }
 
 .history-btn {
@@ -1942,7 +1940,8 @@ main {
     font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%;
+    flex: 1;
+    max-width: 120px;
 }
 
 .history-btn:hover {
@@ -2068,7 +2067,8 @@ main {
     font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%;
+    flex: 1;
+    max-width: 120px;
 }
 
 .reset-week-btn:hover {
