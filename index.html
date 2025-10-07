@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Treino">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Treino - Diego Norman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💪 Meu Treino</h1>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <p class="progress-text">Progresso: <span id="progress-count">0</span>/<span id="total-count">0</span></p>
+        </header>
+
+        <main>
+            <div class="workout-day" id="workout-container">
+                <!-- Exercícios serão carregados aqui -->
+            </div>
+        </main>
+
+        <div id="timer-modal" class="timer-modal hidden">
+            <div class="timer-content">
+                <h3>Pausa</h3>
+                <div class="timer-display" id="timer-display">60</div>
+                <button onclick="closeTimer()" class="close-timer">Fechar</button>
+            </div>
+        </div>
+
+        <div id="video-modal" class="timer-modal hidden">
+            <div class="video-content">
+                <button onclick="closeVideo()" class="close-video">✕</button>
+                <iframe id="video-frame" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-btn active" onclick="showDay(1)">1</button>
+            <button class="nav-btn" onclick="showDay(2)">2</button>
+            <button class="nav-btn" onclick="showDay(3)">3</button>
+            <button class="nav-btn" onclick="showDay(4)">4</button>
+            <button class="nav-btn" onclick="showDay(5)">5</button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
