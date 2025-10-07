@@ -23,7 +23,20 @@
             </div>
             <div class="progress-section">
                 <p class="progress-text">Progresso: <span id="progress-count">0</span>/<span id="total-count">0</span></p>
-                <button class="reset-btn" onclick="resetWorkout()">🔄 Reiniciar</button>
+            </div>
+            
+            <div class="weekly-progress">
+                <div class="week-days">
+                    <div class="day-box" data-day="1">S</div>
+                    <div class="day-box" data-day="2">T</div>
+                    <div class="day-box" data-day="3">Q</div>
+                    <div class="day-box" data-day="4">Q</div>
+                    <div class="day-box" data-day="5">S</div>
+                </div>
+                <div class="week-buttons">
+                    <button class="history-btn" onclick="showHistory()">📅 Histórico</button>
+                    <button class="reset-week-btn" onclick="resetWeek()">🗓️ Nova Semana</button>
+                </div>
             </div>
         </header>
 
@@ -351,5 +364,13 @@
                 <button onclick="closeTimer()" class="close-timer">✕</button>
                 <div class="timer-display" id="timer-display">00:00</div>
                 <div class="timer-label">Tempo de descanso</div>
+            </div>
+        </div>
+
+        <div id="history-modal" class="timer-modal hidden">
+            <div class="history-content">
+                <button onclick="closeHistory()" class="close-history">✕</button>
+                <h3>📅 Histórico de Treinos</h3>
+                <div id="history-list"></div>
             </div>
         </div>

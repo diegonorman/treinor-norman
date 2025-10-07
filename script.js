@@ -1,6 +1,8 @@
 // Dados dos treinos - carregados do arquivo workout-data.js
 let workoutData = {};
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
+let weeklyProgress = JSON.parse(localStorage.getItem('weeklyProgress')) || {};
+let monthlyHistory = JSON.parse(localStorage.getItem('monthlyHistory')) || {};
 let currentDay = 1;
 let timerInterval;
 
@@ -178,6 +180,13 @@ function updateProgress() {
     document.getElementById('progress').style.width = percentage + '%';
     document.getElementById('progress-count').textContent = completedCount;
     document.getElementById('total-count').textContent = totalExercises;
+    
+    // Marcar dia como completo se todos exercícios foram feitos
+    if (completedCount === totalExercises && totalExercises > 0) {
+        markDayCompleted(currentDay);
+    }
+    
+    updateWeeklyDisplay();
 }
 
 function startTimer(restTime) {
@@ -613,29 +622,98 @@ function addDefaultAlarms() {
     }
 }
 
-function resetWorkout() {
-    if (confirm('Deseja reiniciar o treino atual? Todos os exercícios serão desmarcados.')) {
-        // Limpar apenas os exercícios do dia atual
-        const workout = workoutData[currentDay];
-        workout.exercises.forEach((exercise, index) => {
-            const exerciseId = `${currentDay}-${index}`;
-            delete completedExercises[exerciseId];
-        });
+function resetWeek() {
+    if (confirm('Deseja iniciar uma nova semana? Todo o progresso será resetado.')) {
+        // Limpar tudo
+        completedExercises = {};
+        weeklyProgress = {};
         
         localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+        localStorage.setItem('weeklyProgress', JSON.stringify(weeklyProgress));
         
-        // Atualizar a tela
+        // Atualizar tela
         renderExercises(currentDay);
         updateProgress();
+        updateWeeklyDisplay();
         
-        // Mostrar feedback
-        createConfetti();
-        showNotification('Treino reiniciado! 🔄');
+        showNotification('Nova semana iniciada! 🗓️');
     }
+}
+
+function markDayCompleted(day) {
+    const today = new Date();
+    const monthKey = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}`;
+    const dayNumber = today.getDate();
+    
+    // Marcar na semana atual
+    weeklyProgress[day] = today.toDateString();
+    localStorage.setItem('weeklyProgress', JSON.stringify(weeklyProgress));
+    
+    // Adicionar ao histórico mensal permanente
+    if (!monthlyHistory[monthKey]) {
+        monthlyHistory[monthKey] = [];
+    }
+    
+    if (!monthlyHistory[monthKey].includes(dayNumber)) {
+        monthlyHistory[monthKey].push(dayNumber);
+        monthlyHistory[monthKey].sort((a, b) => a - b);
+    }
+    
+    localStorage.setItem('monthlyHistory', JSON.stringify(monthlyHistory));
+}
+
+function updateWeeklyDisplay() {
+    for (let day = 1; day <= 5; day++) {
+        const dayBox = document.querySelector(`[data-day="${day}"]`);
+        if (weeklyProgress[day]) {
+            dayBox.classList.add('completed');
+        } else {
+            dayBox.classList.remove('completed');
+        }
+    }
+}
+
+function showHistory() {
+    document.getElementById('history-modal').classList.remove('hidden');
+    renderHistory();
+}
+
+function closeHistory() {
+    document.getElementById('history-modal').classList.add('hidden');
+}
+
+function renderHistory() {
+    const historyList = document.getElementById('history-list');
+    
+    if (Object.keys(monthlyHistory).length === 0) {
+        historyList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum treino registrado ainda</p>';
+        return;
+    }
+    
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    
+    historyList.innerHTML = Object.keys(monthlyHistory)
+        .sort()
+        .reverse()
+        .map(monthKey => {
+            const [year, month] = monthKey.split('-');
+            const monthName = months[parseInt(month) - 1];
+            const days = monthlyHistory[monthKey];
+            
+            return `
+                <div class="month-item">
+                    <div class="month-title">${monthName} ${year} (${days.length} dias)</div>
+                    <div class="month-days">
+                        ${days.map(day => `<div class="history-day">${day}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
 }
 document.addEventListener('DOMContentLoaded', function() {
     loadWorkoutData();
     initializeAlarms();
+    updateWeeklyDisplay();
     
     // Adicionar botão para alarmes padrão
     setTimeout(() => {
