@@ -331,8 +331,7 @@ function openVideo(url) {
             videoPlayer.src = directUrl;
             
             videoPlayer.onerror = function() {
-                alert('⚠️ Vídeo não público. Abra o link do Drive e torne público.');
-                window.open(url, '_blank');
+                alert('⚠️ Vídeo não público. Configure como público no Drive.');
                 closeVideo();
             };
         };
@@ -356,6 +355,10 @@ function openVideo(url) {
         videoPlayer.style.display = 'none';
         iframe.style.display = 'block';
         iframe.src = embedUrl;
+    }
+    
+    document.getElementById('video-modal').classList.remove('hidden');
+}
 }
 
 // Verificar token na URL (retorno do OAuth)
