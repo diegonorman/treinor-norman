@@ -205,7 +205,7 @@ function startTimer(restTime) {
     
     let remainingTime = timeInSeconds;
     
-    window.timerInterval = setInterval(() => {
+    timerInterval = setInterval(() => {
         remainingTime--;
         const display = document.getElementById('timer-display');
         if (display) {
@@ -213,7 +213,7 @@ function startTimer(restTime) {
         }
         
         if (remainingTime <= 0) {
-            clearInterval(window.timerInterval);
+            clearInterval(timerInterval);
             
             // Vibrar quando acabar
             if (navigator.vibrate) {
@@ -299,10 +299,7 @@ function closeVideo() {
     document.getElementById('video-modal').classList.add('hidden');
 }
 
-function closeTimer() {
-    clearInterval(timerInterval);
-    document.getElementById('timer-modal').classList.add('hidden');
-}
+
 
 // Efeito de confete quando completar exercício
 function createConfetti() {
