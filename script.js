@@ -332,41 +332,14 @@ function openVideo(url) {
     
     if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
+        const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
         
-        // Se logado no Google, usar API autenticada
-        if (isGoogleLoggedIn) {
-            const token = localStorage.getItem('google_access_token');
-            const apiUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&access_token=${token}`;
-            
-            iframe.style.display = 'none';
-            videoPlayer.style.display = 'block';
-            videoPlayer.src = apiUrl;
-            videoPlayer.load();
-        } else {
-            // Tentar sem autenticação primeiro
-            const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-            
-            iframe.style.display = 'none';
-            videoPlayer.style.display = 'block';
-            videoPlayer.src = directUrl;
-            
-            videoPlayer.onerror = function() {
-                if (!localStorage.getItem('google_login_attempted')) {
-                    if (confirm('🔐 Vídeo privado. Fazer login no Google Drive?')) {
-                        localStorage.setItem('google_login_attempted', 'true');
-                        loginGoogle();
-                    } else {
-                        window.open(url, '_blank');
-                        closeVideo();
-                    }
-                } else {
-                    window.open(url, '_blank');
-                    closeVideo();
-                }
-            };
-            
-            videoPlayer.load();
-        }
+        // Usar iframe embed com API Key para PWA no iPhone
+        const embedUrl = `https://drive.google.com/file/d/${fileId}/preview?key=${GOOGLE_API_KEY}`;
+        
+        videoPlayer.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = embedUrl;
     } else {
         // YouTube continua igual
         let embedUrl = url;
