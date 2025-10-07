@@ -1940,13 +1940,13 @@ main {
     background: linear-gradient(135deg, #2196F3, #1976D2);
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.3s ease;
     flex: 1;
-    max-width: 120px;
+    max-width: 100px;
 }
 
 .history-btn:hover {
@@ -2067,13 +2067,13 @@ main {
     background: linear-gradient(135deg, #9c27b0, #7b1fa2);
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.3s ease;
     flex: 1;
-    max-width: 120px;
+    max-width: 100px;
 }
 
 .reset-week-btn:hover {
