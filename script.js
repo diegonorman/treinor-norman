@@ -185,32 +185,17 @@ function startTimer(restTime) {
     if (timeInSeconds <= 0) return;
     
     // Fechar vídeo se estiver aberto
-    const videoModal = document.getElementById('video-modal');
-    if (videoModal) {
-        videoModal.remove();
-    }
+    closeVideo();
     
-    // Criar modal do cronômetro
-    const modal = document.createElement('div');
-    modal.className = 'timer-modal';
-    modal.innerHTML = `
-        <div class="timer-content">
-            <div class="timer-display" id="timer-display">${formatTime(timeInSeconds)}</div>
-            <div class="timer-label">Tempo de descanso</div>
-            <button class="timer-close" onclick="closeTimer()">Fechar</button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
+    // Mostrar modal do cronômetro
+    document.getElementById('timer-display').textContent = formatTime(timeInSeconds);
+    document.getElementById('timer-modal').classList.remove('hidden');
     
     let remainingTime = timeInSeconds;
     
     timerInterval = setInterval(() => {
         remainingTime--;
-        const display = document.getElementById('timer-display');
-        if (display) {
-            display.textContent = formatTime(remainingTime);
-        }
+        document.getElementById('timer-display').textContent = formatTime(remainingTime);
         
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
@@ -221,7 +206,7 @@ function startTimer(restTime) {
             }
             
             // Fechar automaticamente
-            modal.remove();
+            closeTimer();
             
             // Mostrar notificação
             showNotification('Tempo de descanso acabou! 💪');
@@ -237,11 +222,8 @@ function formatTime(seconds) {
 }
 
 function closeTimer() {
-    const modal = document.querySelector('.timer-modal');
-    if (modal) {
-        clearInterval(window.timerInterval);
-        modal.remove();
-    }
+    clearInterval(timerInterval);
+    document.getElementById('timer-modal').classList.add('hidden');
 }
 
 function showNotification(message) {
