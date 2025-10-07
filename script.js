@@ -309,35 +309,7 @@ function parseRestTime(restTime) {
 }
 
 // Configuração do Google Drive API
-const GOOGLE_CLIENT_ID = '245340556371-gh1f778f3o4ilrvfs8eg8cehnfglt888.apps.googleusercontent.com';
-let isGoogleLoggedIn = false;
-
-function initGoogleAuth() {
-    // Verificar se já está logado
-    const token = localStorage.getItem('google_access_token');
-    if (token) {
-        isGoogleLoggedIn = true;
-    }
-}
-
-function loginGoogle() {
-    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://diegonorman.github.io/treinor-norman/')}&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token&prompt=select_account`;
-    
-    // Abrir em popup para evitar 404
-    const popup = window.open(authUrl, 'google-auth', 'width=500,height=600');
-    
-    // Monitorar o popup
-    const checkClosed = setInterval(() => {
-        if (popup.closed) {
-            clearInterval(checkClosed);
-            // Verificar se token foi salvo
-            if (localStorage.getItem('google_access_token')) {
-                isGoogleLoggedIn = true;
-                location.reload(); // Recarregar para aplicar login
-            }
-        }
-    }, 1000);
-}
+const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
 
 function openVideo(url) {
     const iframe = document.getElementById('video-frame');
@@ -346,40 +318,26 @@ function openVideo(url) {
     if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         
-        // Se logado no Google, usar API autenticada
-        if (isGoogleLoggedIn) {
-            const token = localStorage.getItem('google_access_token');
-            const apiUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&access_token=${token}`;
-            
-            iframe.style.display = 'none';
-            videoPlayer.style.display = 'block';
-            videoPlayer.src = apiUrl;
-            videoPlayer.load();
-        } else {
-            // Tentar sem autenticação primeiro
+        // Usar API Key para acessar vídeos públicos
+        const apiUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${GOOGLE_API_KEY}`;
+        
+        iframe.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.src = apiUrl;
+        
+        videoPlayer.onerror = function() {
+            // Se não funcionar com API, tentar URL direta
             const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-            
-            iframe.style.display = 'none';
-            videoPlayer.style.display = 'block';
             videoPlayer.src = directUrl;
             
             videoPlayer.onerror = function() {
-                if (!localStorage.getItem('google_login_attempted')) {
-                    if (confirm('🔐 Vídeo privado. Fazer login no Google Drive?')) {
-                        localStorage.setItem('google_login_attempted', 'true');
-                        loginGoogle();
-                    } else {
-                        window.open(url, '_blank');
-                        closeVideo();
-                    }
-                } else {
-                    window.open(url, '_blank');
-                    closeVideo();
-                }
+                alert('⚠️ Vídeo não público. Abra o link do Drive e torne público.');
+                window.open(url, '_blank');
+                closeVideo();
             };
-            
-            videoPlayer.load();
-        }
+        };
+        
+        videoPlayer.load();
     } else {
         // YouTube continua igual
         let embedUrl = url;
@@ -398,23 +356,11 @@ function openVideo(url) {
         videoPlayer.style.display = 'none';
         iframe.style.display = 'block';
         iframe.src = embedUrl;
-    }
-    
-    document.getElementById('video-modal').classList.remove('hidden');
 }
 
 // Verificar token na URL (retorno do OAuth)
 window.addEventListener('load', function() {
-    const hash = window.location.hash;
-    if (hash.includes('access_token')) {
-        const token = hash.split('access_token=')[1].split('&')[0];
-        localStorage.setItem('google_access_token', token);
-        localStorage.setItem('google_login_attempted', 'true');
-        isGoogleLoggedIn = true;
-        window.location.hash = ''; // Limpar URL
-        alert('✅ Login no Google Drive realizado!');
-    }
-    initGoogleAuth();
+    // Não precisa mais de OAuth com API Key
 });
 
 function closeVideo() {
