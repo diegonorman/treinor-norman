@@ -363,9 +363,11 @@
         <div id="video-modal" class="timer-modal hidden">
             <div class="video-content">
                 <button onclick="closeVideo()" class="close-video">✕</button>
+                <video id="video-player" controls style="width: 100%; height: 100%; display: none;">
+                    Seu navegador não suporta vídeo HTML5.
+                </video>
                 <iframe id="video-frame" src="" frameborder="0" allowfullscreen loading="eager"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
             </div>
         </div>
 

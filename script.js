@@ -309,29 +309,44 @@ function parseRestTime(restTime) {
 }
 
 function openVideo(url) {
-    let embedUrl = url;
+    const iframe = document.getElementById('video-frame');
+    const videoPlayer = document.getElementById('video-player');
     
-    if (url.includes('youtube.com/watch')) {
-        const videoId = url.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    } else if (url.includes('youtube.com/shorts')) {
-        const videoId = url.split('/shorts/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    } else if (url.includes('youtu.be')) {
-        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-    } else if (url.includes('drive.google.com')) {
+    if (url.includes('drive.google.com')) {
+        // Para Google Drive, usar player HTML5 nativo
         const fileId = url.split('/d/')[1]?.split('/')[0];
-        embedUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=embed_facebook`;
+        const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+        
+        iframe.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.src = directUrl;
+        videoPlayer.load();
+    } else {
+        // Para YouTube, usar iframe
+        let embedUrl = url;
+        
+        if (url.includes('youtube.com/watch')) {
+            const videoId = url.split('v=')[1]?.split('&')[0];
+            embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        } else if (url.includes('youtube.com/shorts')) {
+            const videoId = url.split('/shorts/')[1]?.split('?')[0];
+            embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        } else if (url.includes('youtu.be')) {
+            const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+            embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        }
+        
+        videoPlayer.style.display = 'none';
+        iframe.style.display = 'block';
+        iframe.src = embedUrl;
     }
     
-    const iframe = document.getElementById('video-frame');
-    iframe.src = embedUrl;
     document.getElementById('video-modal').classList.remove('hidden');
 }
 
 function closeVideo() {
     document.getElementById('video-frame').src = '';
+    document.getElementById('video-player').src = '';
     document.getElementById('video-modal').classList.add('hidden');
 }
 
