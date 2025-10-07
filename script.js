@@ -309,7 +309,7 @@ function parseRestTime(restTime) {
 }
 
 // Configuração do Google Drive API
-const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI'; // Você precisa criar no Google Console
+const GOOGLE_CLIENT_ID = '245340556371-gh1f778f3o4ilrvfs8eg8cehnfglt888.apps.googleusercontent.com';
 let isGoogleLoggedIn = false;
 
 function initGoogleAuth() {
