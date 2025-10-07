@@ -334,16 +334,25 @@ function openVideo(url) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
         
-        // Usar iframe embed com API Key e aceitar cookies automaticamente
-        const embedUrl = `https://drive.google.com/file/d/${fileId}/preview?key=${GOOGLE_API_KEY}&usp=embed_facebook`;
+        // Para PWA, usar endpoint direto sem cookies
+        const embedUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${GOOGLE_API_KEY}`;
         
-        videoPlayer.style.display = 'none';
-        iframe.style.display = 'block';
-        iframe.src = embedUrl;
+        iframe.style.display = 'none';
+        videoPlayer.style.display = 'block';
+        videoPlayer.src = embedUrl;
         
-        // Configurar iframe para aceitar cookies
-        iframe.setAttribute('allow', 'autoplay; encrypted-media');
-        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+        videoPlayer.onerror = function() {
+            // Fallback: tentar URL simples do Drive
+            const simpleUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
+            videoPlayer.src = simpleUrl;
+            
+            videoPlayer.onerror = function() {
+                alert('⚠️ Vídeo não acessível no PWA. Torne o arquivo público no Drive.');
+                closeVideo();
+            };
+        };
+        
+        videoPlayer.load();
     } else {
         // YouTube continua igual
         let embedUrl = url;
