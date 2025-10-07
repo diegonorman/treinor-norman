@@ -85,8 +85,9 @@ function renderExercises(day) {
         // Formatar séries e repetições
         const formatSets = (sets) => {
             if (!sets) return '';
-            // Melhorar formatação: substituir 'x' por '×' e limpar espaços
+            // Corrigir formatação: substituir 'xx' e 'x' por '×' e limpar espaços
             return sets
+                .replace(/xx/gi, '×')
                 .replace(/x/gi, '×')
                 .replace(/\s*×\s*/g, '× ')
                 .replace(/\s+/g, ' ')
@@ -121,8 +122,8 @@ function renderExercises(day) {
                     <strong>Observações:</strong> ${exercise.details || 'Progressão de carga.'}
                 </div>
                 <div class="exercise-actions">
-                    ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">📹 Ver Vídeo</button>` : ''}
-                    ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">⏱️ Cronômetro</button>` : ''}
+                    ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">Ver Vídeo</button>` : ''}
+                    ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">Cronômetro</button>` : ''}
                 </div>
             </div>
         `;
@@ -183,63 +184,81 @@ function startTimer(restTime) {
     const timeInSeconds = parseRestTime(restTime);
     if (timeInSeconds <= 0) return;
     
-    // Abrir cronômetro em nova janela igual ao vídeo
-    const timerWindow = window.open('', '_blank', 'width=300,height=200,resizable=no,scrollbars=no');
+    // Fechar vídeo se estiver aberto
+    const videoModal = document.getElementById('video-modal');
+    if (videoModal) {
+        videoModal.remove();
+    }
     
-    timerWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Cronômetro - ${restTime}</title>
-            <style>
-                body { 
-                    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
-                    display: flex; 
-                    flex-direction: column; 
-                    align-items: center; 
-                    justify-content: center; 
-                    height: 100vh; 
-                    margin: 0; 
-                    background: linear-gradient(135deg, #667eea, #764ba2); 
-                    color: white;
-                }
-                .timer { font-size: 48px; font-weight: bold; margin-bottom: 20px; }
-                .label { font-size: 16px; opacity: 0.9; }
-            </style>
-        </head>
-        <body>
-            <div class="timer" id="timer">${timeInSeconds}</div>
-            <div class="label">Tempo de descanso</div>
-        </body>
-        </html>
-    `);
+    // Criar modal do cronômetro
+    const modal = document.createElement('div');
+    modal.className = 'timer-modal';
+    modal.innerHTML = `
+        <div class="timer-content">
+            <div class="timer-display" id="timer-display">${timeInSeconds}</div>
+            <div class="timer-label">Tempo de descanso</div>
+            <button class="timer-close" onclick="closeTimer()">Fechar</button>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
     
     let remainingTime = timeInSeconds;
     
-    const interval = setInterval(() => {
+    window.timerInterval = setInterval(() => {
         remainingTime--;
-        if (timerWindow.closed) {
-            clearInterval(interval);
-            return;
-        }
-        
-        timerWindow.document.getElementById('timer').textContent = remainingTime;
+        document.getElementById('timer-display').textContent = remainingTime;
         
         if (remainingTime <= 0) {
-            clearInterval(interval);
+            clearInterval(window.timerInterval);
             
             // Vibrar quando acabar
             if (navigator.vibrate) {
                 navigator.vibrate([200, 100, 200, 100, 200]);
             }
             
-            alert('Tempo de descanso acabou! 💪');
-            timerWindow.close();
+            // Fechar automaticamente
+            modal.remove();
+            
+            // Mostrar notificação
+            showNotification('Tempo de descanso acabou! 💪');
         }
     }, 1000);
 }
-        }
-    }, 1000);
+
+function closeTimer() {
+    const modal = document.querySelector('.timer-modal');
+    if (modal) {
+        clearInterval(window.timerInterval);
+        modal.remove();
+    }
+}
+
+function showNotification(message) {
+    // Criar notificação toast
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        z-index: 1001;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: slideDown 0.3s ease;
+    `;
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideUp 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 function parseRestTime(restTime) {
