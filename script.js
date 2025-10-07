@@ -195,7 +195,7 @@ function startTimer(restTime) {
     modal.className = 'timer-modal';
     modal.innerHTML = `
         <div class="timer-content">
-            <div class="timer-display" id="timer-display">${timeInSeconds}</div>
+            <div class="timer-display" id="timer-display">${formatTime(timeInSeconds)}</div>
             <div class="timer-label">Tempo de descanso</div>
             <button class="timer-close" onclick="closeTimer()">Fechar</button>
         </div>
@@ -207,7 +207,10 @@ function startTimer(restTime) {
     
     window.timerInterval = setInterval(() => {
         remainingTime--;
-        document.getElementById('timer-display').textContent = remainingTime;
+        const display = document.getElementById('timer-display');
+        if (display) {
+            display.textContent = formatTime(remainingTime);
+        }
         
         if (remainingTime <= 0) {
             clearInterval(window.timerInterval);
@@ -224,6 +227,13 @@ function startTimer(restTime) {
             showNotification('Tempo de descanso acabou! 💪');
         }
     }, 1000);
+}
+
+function formatTime(seconds) {
+    if (seconds <= 0) return '00:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 }
 
 function closeTimer() {
