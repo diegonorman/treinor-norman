@@ -25,8 +25,232 @@
         </header>
 
         <main>
-            <div class="workout-day" id="workout-container">
-                <!-- Exercícios serão carregados aqui -->
+            <!-- Seção de Treinos -->
+            <div id="workout-section" class="section active">
+                <div class="workout-nav">
+                    <button class="workout-btn active" onclick="showDay(1)">🔥 Dia 1</button>
+                    <button class="workout-btn" onclick="showDay(2)">💪 Dia 2</button>
+                    <button class="workout-btn" onclick="showDay(3)">⚡ Dia 3</button>
+                    <button class="workout-btn" onclick="showDay(4)">🚀 Dia 4</button>
+                    <button class="workout-btn" onclick="showDay(5)">🏆 Dia 5</button>
+                </div>
+                <div class="workout-day" id="workout-container">
+                    <!-- Exercícios serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Seção de Nutrição -->
+            <div id="nutrition-section" class="section">
+                <div class="nutrition-content">
+                    <div class="info-card">
+                        <h3>🧠 Regras Gerais</h3>
+                        <ul>
+                            <li><strong>Calorias:</strong> 2.700 (meta: 2.850)</li>
+                            <li><strong>Objetivo:</strong> Hipertrofia e saúde</li>
+                            <li><strong>Refeição livre:</strong> 1x/semana + metformina</li>
+                            <li><strong>Hidratação:</strong> 5-6L água/dia</li>
+                            <li><strong>Sal:</strong> 8g/dia (2g por refeição)</li>
+                        </ul>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3>🍳 1ª Refeição - Manhã</h3>
+                        <ul>
+                            <li>Ovos (3 unidades)</li>
+                            <li>Pão (2 fatias) ou Tapioca (35g)</li>
+                            <li>Queijo mussarela (2 fatias)</li>
+                            <li>Chia (10g)</li>
+                            <li>Vinagre de maçã (1 colher) + água (200ml)</li>
+                        </ul>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3>🍌 2ª Refeição - Lanche</h3>
+                        <p><strong>Escolher uma fruta:</strong></p>
+                        <ul>
+                            <li>Banana, Laranja, Maçã, Pera (2 unidades)</li>
+                            <li>Mamão (200g)</li>
+                            <li>Melão, Morango (300g)</li>
+                        </ul>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3>🍽️ 3ª Refeição - Almoço</h3>
+                        <p><strong>Proteína (escolher 1):</strong></p>
+                        <ul>
+                            <li>Frango sem pele (250g)</li>
+                            <li>Filé de peixe (300g)</li>
+                        </ul>
+                        <p><strong>Carboidrato (escolher 1):</strong></p>
+                        <ul>
+                            <li>Arroz/Mandioca/Cuscuz (200g)</li>
+                            <li>Batata Inglesa/Doce (400g ou 300g assada)</li>
+                        </ul>
+                        <ul>
+                            <li>Feijão (100g - grãos)</li>
+                            <li>Legumes (200g) + Salada verde à vontade</li>
+                            <li>Abacaxi (200g)</li>
+                        </ul>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3>🥤 4ª Refeição - Lanche (3 opções)</h3>
+                        <div class="meal-options">
+                            <div class="meal-option">
+                                <h4>Opção 1 - Mingau</h4>
+                                <ul>
+                                    <li>Whey (1 dose)</li>
+                                    <li>Aveia (30g)</li>
+                                    <li>Fruta (escolher)</li>
+                                    <li>Iogurte zero (100g)</li>
+                                </ul>
+                            </div>
+                            <div class="meal-option">
+                                <h4>Opção 2 - Bolinho</h4>
+                                <ul>
+                                    <li>Whey (1 dose)</li>
+                                    <li>Claras (2 unidades)</li>
+                                    <li>Aveia (30g)</li>
+                                    <li>Fruta (escolher)</li>
+                                    <li>Iogurte zero (100g)</li>
+                                </ul>
+                            </div>
+                            <div class="meal-option">
+                                <h4>Opção 3 - Sólida</h4>
+                                <ul>
+                                    <li>Frango (80g) ou Peixe (100g)</li>
+                                    <li>Carboidrato (200g)</li>
+                                    <li>Salada verde à vontade</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <p><strong>*Mel (30g) nos dias: costas, quadríceps, posterior</strong></p>
+                    </div>
+
+                    <div class="meal-card">
+                        <h3>🌙 5ª Refeição - Jantar</h3>
+                        <ul>
+                            <li>Frango sem pele (250g) ou Peixe (300g)</li>
+                            <li>Carboidrato (200g) - escolher</li>
+                            <li>Legumes (200g) + Salada verde</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🍽️ Ordem de Consumo</h3>
+                        <ol>
+                            <li><strong>1º Salada:</strong> Fibras e prebióticos</li>
+                            <li><strong>2º Legumes:</strong> Vitaminas e minerais</li>
+                            <li><strong>3º Proteínas:</strong> Saciedade</li>
+                            <li><strong>4º Carboidratos:</strong> Energia</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Suplementos -->
+            <div id="supplements-section" class="section">
+                <div class="supplements-content">
+                    <div class="supplement-time">
+                        <h3>🌅 Ao Acordar</h3>
+                        <ul>
+                            <li>Metformina 500mg</li>
+                            <li>Rhodiola Rosea 150mg</li>
+                            <li>Ashwagandha 300mg</li>
+                            <li>Ioimbina 10mg</li>
+                            <li>Morosil 500mg</li>
+                        </ul>
+                    </div>
+
+                    <div class="supplement-time">
+                        <h3>🍳 Pós-Desjejum</h3>
+                        <ul>
+                            <li>Multivitamínico completo</li>
+                            <li>Ômega 3 DHA 400mg</li>
+                            <li>Curcumina 500mg</li>
+                            <li>Creatina 5g</li>
+                        </ul>
+                    </div>
+
+                    <div class="supplement-time">
+                        <h3>🍽️ Pós-Almoço</h3>
+                        <ul>
+                            <li>Enzimas digestivas (1 dose)</li>
+                        </ul>
+                    </div>
+
+                    <div class="supplement-time">
+                        <h3>🌙 Pós-Janta</h3>
+                        <ul>
+                            <li>Fórmula do Sono (1 dose)</li>
+                            <li>Magnésio Treonato 300mg</li>
+                            <li>Apigenina 50mg</li>
+                            <li>Teanina 200mg</li>
+                        </ul>
+                    </div>
+
+                    <div class="supplement-time">
+                        <h3>💪 Pré-Treino (30min antes)</h3>
+                        <ul>
+                            <li>Beta-alanina 1g</li>
+                            <li>Taurina 1g</li>
+                            <li>L-Tirosina 1g</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>💉 Protocolo</h3>
+                        <ul>
+                            <li><strong>Testosterona:</strong> 400mg (2x/semana)</li>
+                            <li><strong>Nandrolona:</strong> 200mg (2x/semana)</li>
+                            <li><strong>Aplicação:</strong> Seg/Qui ou Ter/Sex</li>
+                            <li><strong>Locais:</strong> Dorsal, ombro, quadríceps</li>
+                            <li><strong>Horário:</strong> Manhã ou pré-treino</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Horários -->
+            <div id="schedule-section" class="section">
+                <div class="schedule-content">
+                    <div class="alarm-card">
+                        <h3>⏰ Alarmes Configurados</h3>
+                        <div class="alarm-list" id="alarm-list">
+                            <!-- Alarmes serão carregados aqui -->
+                        </div>
+                        <button class="add-alarm-btn" onclick="showAlarmModal()">+ Adicionar Alarme</button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🏃‍♀️ Aeróbicos</h3>
+                        <ul>
+                            <li>5x na semana (30 min)</li>
+                            <li>Pós-treino ou turno alternado</li>
+                            <li>FC: 120 bpm (com ofegância)</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>😴 Sono</h3>
+                        <ul>
+                            <li>Mínimo 7h por noite</li>
+                            <li>Rotina fixa</li>
+                            <li>Sem telas 1h antes</li>
+                            <li>Ambiente escuro e silencioso</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>🦷 Higiene Bucal</h3>
+                        <ul>
+                            <li>Escovar após todas refeições</li>
+                            <li>Limpador de língua diário</li>
+                            <li>Enxaguante sem álcool (2x/dia)</li>
+                            <li>Frutas cítricas para paladar</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </main>
 
@@ -38,37 +262,59 @@
             </div>
         </div>
 
+        <div id="alarm-modal" class="timer-modal hidden">
+            <div class="alarm-modal-content">
+                <h3>⏰ Adicionar Alarme</h3>
+                <div class="alarm-form">
+                    <label>Horário:</label>
+                    <input type="time" id="alarm-time" required>
+                    
+                    <label>Descrição:</label>
+                    <input type="text" id="alarm-description" placeholder="Ex: Tomar suplementos" required>
+                    
+                    <label>Repetir:</label>
+                    <select id="alarm-repeat">
+                        <option value="daily">Todos os dias</option>
+                        <option value="weekdays">Dias úteis</option>
+                        <option value="weekends">Fins de semana</option>
+                        <option value="once">Uma vez</option>
+                    </select>
+                    
+                    <div class="alarm-buttons">
+                        <button onclick="saveAlarm()" class="save-alarm">Salvar</button>
+                        <button onclick="closeAlarmModal()" class="cancel-alarm">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <button class="nav-btn active" onclick="showSection('workout')">
+                <span class="nav-icon">💪</span>
+                <span class="nav-label">Treino</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('nutrition')">
+                <span class="nav-icon">🥗</span>
+                <span class="nav-label">Dieta</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('supplements')">
+                <span class="nav-icon">💊</span>
+                <span class="nav-label">Suplementos</span>
+            </button>
+            <button class="nav-btn" onclick="showSection('schedule')">
+                <span class="nav-icon">⏰</span>
+                <span class="nav-label">Horários</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="workout-data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
         <div id="video-modal" class="timer-modal hidden">
             <div class="video-content">
                 <button onclick="closeVideo()" class="close-video">✕</button>
                 <iframe id="video-frame" src="" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
-
-        <nav class="bottom-nav">
-            <button class="nav-btn active" onclick="showDay(1)">
-                <span class="nav-icon">🔥</span>
-                <span class="nav-label">Dia 1</span>
-            </button>
-            <button class="nav-btn" onclick="showDay(2)">
-                <span class="nav-icon">💪</span>
-                <span class="nav-label">Dia 2</span>
-            </button>
-            <button class="nav-btn" onclick="showDay(3)">
-                <span class="nav-icon">⚡</span>
-                <span class="nav-label">Dia 3</span>
-            </button>
-            <button class="nav-btn" onclick="showDay(4)">
-                <span class="nav-icon">🚀</span>
-                <span class="nav-label">Dia 4</span>
-            </button>
-            <button class="nav-btn" onclick="showDay(5)">
-                <span class="nav-icon">🏆</span>
-                <span class="nav-label">Dia 5</span>
-            </button>
-        </nav>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>

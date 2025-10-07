@@ -2,7 +2,7 @@
 
 echo "🔄 Atualizando treinos do Excel..."
 
-# Converter Excel para JSON
+# Converter Excel para JavaScript
 python3 convert_excel.py
 
 if [ $? -eq 0 ]; then
@@ -12,7 +12,7 @@ if [ $? -eq 0 ]; then
     # Se estiver no Git, fazer commit automático
     if [ -d ".git" ]; then
         echo "📝 Fazendo commit das mudanças..."
-        git add workout_data.json
+        git add workout-data.js
         git commit -m "Atualizar treinos do Excel - $(date '+%d/%m/%Y %H:%M')"
         echo "🚀 Pronto para push no GitHub!"
     fi

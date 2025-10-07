@@ -1,292 +1,20 @@
-// Dados dos treinos - serão carregados do JSON
+// Dados dos treinos - carregados do arquivo workout-data.js
 let workoutData = {};
 let completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
 let currentDay = 1;
 let timerInterval;
 
-// Carregar dados do JSON
-async function loadWorkoutData() {
-    try {
-        const response = await fetch('workout_data.json');
-        if (!response.ok) {
-            throw new Error('Erro ao carregar dados dos treinos');
-        }
-        workoutData = await response.json();
-        
-        // Inicializar app após carregar dados
-        showDay(1);
-        updateProgress();
-        
-        console.log('✅ Dados dos treinos carregados com sucesso!');
-    } catch (error) {
-        console.error('❌ Erro ao carregar dados:', error);
-        
-        // Fallback para dados básicos se não conseguir carregar
-        workoutData = {
-            1: {
-                name: "Carregando...",
-                exercises: [{
-                    name: "Erro ao carregar dados do Excel",
-                    sets: "Verifique se o arquivo workout_data.json existe",
-                    rest: "",
-                    details: "Recarregue a página ou execute o script convert_excel.py",
-                    video: ""
-                }]
-            }
-        };
-        
-        showDay(1);
-        updateProgress();
-    }
+// Carregar dados dos treinos
+function loadWorkoutData() {
+    // Usar dados embutidos do arquivo workout-data.js
+    workoutData = WORKOUT_DATA;
+    
+    // Inicializar app após carregar dados
+    showDay(1);
+    updateProgress();
+    
+    console.log('✅ Dados dos treinos carregados com sucesso!');
 }
-
-// Inicializar quando a página carregar
-document.addEventListener('DOMContentLoaded', function() {
-    loadWorkoutData();
-});
-        exercises: [
-            {
-                name: "ALONGAMENTO PEITORAL MENOR",
-                sets: "1x20 seg",
-                rest: "-",
-                details: "",
-                video: "https://www.youtube.com/shorts/1yElQu1suCg?feature=share"
-            },
-            {
-                name: "ABDOMINAL BANCO DECLINADO",
-                sets: "4x15",
-                rest: "60 seg",
-                details: "Usar anilha no peito.",
-                video: "https://drive.google.com/file/d/1Kec-G4bbX8nUbpB4rm-RzrI5A1Y94bdn/view?usp=drive_link"
-            },
-            {
-                name: "ABDOMINAL ELEVAÇÃO DE PERNAS NA BARRA",
-                sets: "4x15",
-                rest: "60 seg",
-                details: "Usar halter entre os pés.",
-                video: "https://grandeatleta.com.br/wp-content/uploads/2018/06/Abdominal-infra-na-barra-fixa.gif"
-            },
-            {
-                name: "CRUCIFIXO INCLINADO NO CROSS",
-                sets: "4x15",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1pF3qRnE1XVj66opbcRmGagNtzup-08Bo/view?usp=drive_link"
-            },
-            {
-                name: "SUPINO INCLINADO (Máquina ou Guiada)",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/17qu6Web_4SsNLLXa-A5oysDG1Jol3kbd/view?usp=drive_link"
-            },
-            {
-                name: "VOADOR",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/18RxXp_n6gc05h6BKvr3o8TC7WgGG9mUa/view?usp=drive_link"
-            },
-            {
-                name: "CROSSOVER",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/16kQayKcudGSUQJKNcTvm5LH3_rodjJMa/view?usp=drive_link"
-            }
-        ]
-    },
-    3: {
-        name: "DIA 3 - Costas/Bíceps",
-        exercises: [
-            {
-                name: "ALONGAMENTO ESCÁPULA/OMBRO",
-                sets: "2x15 seg",
-                rest: "15 seg",
-                details: "",
-                video: "https://www.youtube.com/shorts/AwA7fzu8ajE?feature=share"
-            },
-            {
-                name: "REMADA LIVRE PRONADA",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1lGyP8xFPyMcHUghCRIVhsINioBuUI-id/view?usp=drive_link"
-            },
-            {
-                name: "REMADA TRIÂNGULO NA MÁQUINA",
-                sets: "4x10-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: ""
-            },
-            {
-                name: "PUXADA ALTA PRONADA",
-                sets: "4x8-12 (até a falha)",
-                rest: "60 seg",
-                details: "Após falhar, fazer +5 repetições 'roubadas' (com balanço).",
-                video: "https://drive.google.com/file/d/1qPfDgL8lDNDl2IC5EsHHSbaHE1OODK0p/view?usp=drive_link"
-            },
-            {
-                name: "PULLDOWN COM CORDA",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1iJDC_64ANTqetf3GK-hd1qQPQlMNrAYU/view?usp=drive_link"
-            },
-            {
-                name: "MEIO TERRA",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1-GRvZLsDLQo-rgrLQyeXyZgldpwh_GZa/view?usp=drive_link"
-            },
-            {
-                name: "ROSCA DIRETA CROSS PEGADA ABERTA",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Na última série, fazer +2 drops de 6 reps.",
-                video: "https://drive.google.com/file/d/1t-3UE-WN-HnD-hESwFkUw5HWplBVSWVM/view?usp=drive_link"
-            },
-            {
-                name: "ROSCA DIRETA NA PUXADA ALTA",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1S4DZr0UmCl6Qj0h6DOo1-x3BIuLMoMfg/view?usp=drive_link"
-            }
-        ]
-    },
-    4: {
-        name: "DIA 4 - Posterior/Glúteo",
-        exercises: [
-            {
-                name: "ALONGAMENTO GLÚTEO",
-                sets: "2x30 seg",
-                rest: "15 seg",
-                details: "",
-                video: "https://www.youtube.com/shorts/zByNfWpvlOI?feature=share"
-            },
-            {
-                name: "ALONGAMENTO POSTERIOR",
-                sets: "2x15 seg",
-                rest: "15 seg",
-                details: "",
-                video: "https://www.youtube.com/shorts/MOb1N4IDl3Q?feature=share"
-            },
-            {
-                name: "MESA FLEXORA",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Tronco levantado. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1MjRTM3Du2dKSi11VlMt6zii7xpbs5ign/view?usp=drive_link"
-            },
-            {
-                name: "CADEIRA FLEXORA",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "3 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1uXTVSWfkAXfw5UoKuw1Cn-nbBYF5roxg/view?usp=drive_link"
-            },
-            {
-                name: "STIFF COM BARRA",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "Focar na amplitude. Progressão de carga.",
-                video: "https://drive.google.com/file/d/10JhCI1PEQV3oTtNjPcZ3lnXRDpPmUN_i/view?usp=drive_link"
-            },
-            {
-                name: "FLEXOR DEITADO COM HALTER",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico.",
-                video: "https://drive.google.com/file/d/1evImvQ8vSG8CfjahJIsDL6IHKOvR8uxq/view?usp=drive_link"
-            },
-            {
-                name: "CADEIRA ABDUTORA",
-                sets: "4x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1ebbyK2hgtynVITTnDWwo_dorwmtNlT8n/view?usp=drive_link"
-            },
-            {
-                name: "ELEVAÇÃO PÉLVICA",
-                sets: "4x6-10",
-                rest: "60 seg",
-                details: "Fase negativa (descida) de 5 segundos. Progressão de carga.",
-                video: "https://drive.google.com/file/d/12Dit2g3NPfTTPwV-DbVygifMtkrA0piC/view?usp=drive_link"
-            }
-        ]
-    },
-    5: {
-        name: "DIA 5 - Ombros/Tríceps/Panturrilha",
-        exercises: [
-            {
-                name: "ALONGAMENTO ESCÁPULA/OMBRO",
-                sets: "2x15 seg",
-                rest: "15 seg",
-                details: "",
-                video: "https://www.youtube.com/shorts/AwA7fzu8ajE?feature=share"
-            },
-            {
-                name: "PANTURRILHA EM PÉ",
-                sets: "4x15-20",
-                rest: "60 seg",
-                details: "Máxima amplitude. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1Bwd3QzvLUK7Ax7LABhKzsoA8O8LsFjkg/view?usp=drive_link"
-            },
-            {
-                name: "DESENVOLVIMENTO (Máquina ou Guiada)",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1V3ggri0GrchEAvD2LXiNj2wFQHbV-ipR/view?usp=drive_link"
-            },
-            {
-                name: "ELEVAÇÃO LATERAL EM PÉ",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/1nXdJ7O4nJsp1295Lw6s6oNHl3ehmAaHM/view?usp=drive_link"
-            },
-            {
-                name: "ELEVAÇÃO LATERAL PARCIAL NO CROSS",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/19mQxNpqBqERFg8DNSptsMndzwPyZqhzy/view?usp=drive_link"
-            },
-            {
-                name: "CRUCIFIXO INVERTIDO NO VOADOR",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/18RxXp_n6gc05h6BKvr3o8TC7WgGG9mUa/view?usp=drive_link"
-            },
-            {
-                name: "ELEVAÇÃO FRONTAL NO CROSS COM CORDA",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/1oLAvzfdiKrUqa-y1BzetP79VRxrjrTPR/view?usp=drive_link"
-            },
-            {
-                name: "TRÍCEPS TESTA CORDA BANCO INCLINADO",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1Pfd0v-Bdc4_aKiPVfjmyf9F57z48jKgd/view?usp=drive_link"
-            },
-            {
-                name: "TRÍCEPS COM BARRA NO CROSS",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/135z_bY-JxYk5Jjld7x5gXpghoBQOEnae/view?usp=drive_link"
-            }
-        ]
-    }
-};
 
 // Registrar Service Worker
 if ('serviceWorker' in navigator) {
@@ -301,7 +29,7 @@ function showDay(day) {
     container.style.opacity = '0.5';
     container.style.transform = 'translateY(20px)';
     
-    document.querySelectorAll('.nav-btn').forEach(btn => {
+    document.querySelectorAll('.workout-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`[onclick="showDay(${day})"]`).classList.add('active');
@@ -378,11 +106,23 @@ function renderExercises(day) {
 }
 
 function toggleExercise(exerciseId) {
+    const wasCompleted = completedExercises[exerciseId] || false;
+    
     completedExercises[exerciseId] = !completedExercises[exerciseId];
     localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
     
     renderExercises(currentDay);
     updateProgress();
+    
+    // Se o exercício foi marcado como completo (não estava antes)
+    if (!wasCompleted && completedExercises[exerciseId]) {
+        createConfetti();
+        
+        // Vibração no celular se disponível
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+    }
 }
 
 function updateProgress() {
@@ -397,32 +137,43 @@ function updateProgress() {
         }
     });
     
-    const progressPercent = (completedCount / totalExercises) * 100;
+    const percentage = (completedCount / totalExercises) * 100;
     
-    document.getElementById('progress').style.width = progressPercent + '%';
+    document.getElementById('progress').style.width = percentage + '%';
     document.getElementById('progress-count').textContent = completedCount;
     document.getElementById('total-count').textContent = totalExercises;
 }
 
 function startTimer(restTime) {
-    const seconds = parseInt(restTime.replace(/[^0-9]/g, '')) || 60;
-    let timeLeft = seconds;
+    const timeInSeconds = parseRestTime(restTime);
+    if (timeInSeconds <= 0) return;
     
-    document.getElementById('timer-display').textContent = timeLeft;
+    let remainingTime = timeInSeconds;
+    
+    document.getElementById('timer-display').textContent = remainingTime;
     document.getElementById('timer-modal').classList.remove('hidden');
     
     timerInterval = setInterval(() => {
-        timeLeft--;
-        document.getElementById('timer-display').textContent = timeLeft;
+        remainingTime--;
+        document.getElementById('timer-display').textContent = remainingTime;
         
-        if (timeLeft <= 0) {
+        if (remainingTime <= 0) {
             clearInterval(timerInterval);
-            document.getElementById('timer-display').textContent = "FIM!";
-            setTimeout(() => {
-                closeTimer();
-            }, 2000);
+            
+            // Vibrar quando acabar
+            if (navigator.vibrate) {
+                navigator.vibrate([200, 100, 200, 100, 200]);
+            }
+            
+            alert('Tempo de descanso acabou! 💪');
+            closeTimer();
         }
     }, 1000);
+}
+
+function parseRestTime(restTime) {
+    const match = restTime.match(/(\d+)/);
+    return match ? parseInt(match[1]) : 60;
 }
 
 function openVideo(url) {
@@ -453,15 +204,6 @@ function closeTimer() {
     document.getElementById('timer-modal').classList.add('hidden');
 }
 
-document.querySelector('h1').addEventListener('click', function() {
-    if (confirm('Deseja resetar todo o progresso?')) {
-        completedExercises = {};
-        localStorage.removeItem('completedExercises');
-        renderExercises(currentDay);
-        updateProgress();
-    }
-});
-
 // Efeito de confete quando completar exercício
 function createConfetti() {
     const colors = ['#667eea', '#764ba2', '#4CAF50', '#FF6B6B', '#FFD93D'];
@@ -490,24 +232,6 @@ function createConfetti() {
         });
         
         animation.onfinish = () => confetti.remove();
-    }
-}
-
-// Atualizar a função toggleExercise para incluir confete
-const originalToggleExercise = toggleExercise;
-function toggleExercise(exerciseId) {
-    const wasCompleted = completedExercises[exerciseId] || false;
-    
-    originalToggleExercise(exerciseId);
-    
-    // Se o exercício foi marcado como completo (não estava antes)
-    if (!wasCompleted && completedExercises[exerciseId]) {
-        createConfetti();
-        
-        // Vibração no celular se disponível
-        if (navigator.vibrate) {
-            navigator.vibrate([100, 50, 100]);
-        }
     }
 }
 
@@ -555,3 +279,241 @@ const rippleCSS = `
 const style = document.createElement('style');
 style.textContent = rippleCSS;
 document.head.appendChild(style);
+
+// Gerenciamento de seções
+let currentSection = 'workout';
+let alarms = JSON.parse(localStorage.getItem('alarms')) || [];
+
+function showSection(section) {
+    // Esconder todas as seções
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    
+    // Mostrar seção selecionada
+    document.getElementById(section + '-section').classList.add('active');
+    document.querySelector(`[onclick="showSection('${section}')"]`).classList.add('active');
+    
+    currentSection = section;
+    
+    if (section === 'schedule') {
+        renderAlarms();
+    }
+}
+
+// Gerenciamento de alarmes
+function showAlarmModal() {
+    document.getElementById('alarm-modal').classList.remove('hidden');
+}
+
+function closeAlarmModal() {
+    document.getElementById('alarm-modal').classList.add('hidden');
+    document.getElementById('alarm-time').value = '';
+    document.getElementById('alarm-description').value = '';
+    document.getElementById('alarm-repeat').value = 'daily';
+}
+
+function saveAlarm() {
+    const time = document.getElementById('alarm-time').value;
+    const description = document.getElementById('alarm-description').value;
+    const repeat = document.getElementById('alarm-repeat').value;
+    
+    if (!time || !description) {
+        alert('Preencha todos os campos!');
+        return;
+    }
+    
+    const alarm = {
+        id: Date.now(),
+        time: time,
+        description: description,
+        repeat: repeat,
+        active: true
+    };
+    
+    alarms.push(alarm);
+    localStorage.setItem('alarms', JSON.stringify(alarms));
+    
+    // Configurar notificação
+    scheduleNotification(alarm);
+    
+    renderAlarms();
+    closeAlarmModal();
+    
+    createConfetti();
+    alert('Alarme criado com sucesso! 🎉');
+}
+
+function deleteAlarm(id) {
+    if (confirm('Deseja excluir este alarme?')) {
+        alarms = alarms.filter(alarm => alarm.id !== id);
+        localStorage.setItem('alarms', JSON.stringify(alarms));
+        renderAlarms();
+    }
+}
+
+function renderAlarms() {
+    const container = document.getElementById('alarm-list');
+    
+    if (alarms.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #666; font-style: italic;">Nenhum alarme configurado</p>';
+        return;
+    }
+    
+    container.innerHTML = alarms.map(alarm => `
+        <div class="alarm-item">
+            <div>
+                <div class="alarm-time">${alarm.time}</div>
+                <div class="alarm-desc">${alarm.description}</div>
+                <div style="font-size: 12px; color: #999;">${getRepeatText(alarm.repeat)}</div>
+            </div>
+            <button class="alarm-delete" onclick="deleteAlarm(${alarm.id})">×</button>
+        </div>
+    `).join('');
+}
+
+function getRepeatText(repeat) {
+    const texts = {
+        'daily': 'Todos os dias',
+        'weekdays': 'Dias úteis',
+        'weekends': 'Fins de semana',
+        'once': 'Uma vez'
+    };
+    return texts[repeat] || repeat;
+}
+
+// Sistema de notificações
+function requestNotificationPermission() {
+    if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                console.log('Notificações permitidas!');
+            }
+        });
+    }
+}
+
+function scheduleNotification(alarm) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        const now = new Date();
+        const [hours, minutes] = alarm.time.split(':');
+        const alarmTime = new Date();
+        alarmTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        
+        // Se o horário já passou hoje, agendar para amanhã
+        if (alarmTime <= now) {
+            alarmTime.setDate(alarmTime.getDate() + 1);
+        }
+        
+        const timeUntilAlarm = alarmTime.getTime() - now.getTime();
+        
+        setTimeout(() => {
+            showNotification(alarm);
+            
+            // Reagendar se for recorrente
+            if (alarm.repeat !== 'once') {
+                scheduleNextAlarm(alarm);
+            }
+        }, timeUntilAlarm);
+    }
+}
+
+function showNotification(alarm) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        const notification = new Notification('🔔 GH Personal - Lembrete', {
+            body: alarm.description,
+            icon: 'icon-192.png',
+            badge: 'icon-192.png',
+            tag: 'alarm-' + alarm.id,
+            requireInteraction: true
+        });
+        
+        // Vibrar se disponível
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200, 100, 200]);
+        }
+        
+        // Fechar após 10 segundos
+        setTimeout(() => notification.close(), 10000);
+    }
+}
+
+function scheduleNextAlarm(alarm) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const dayOfWeek = tomorrow.getDay(); // 0 = domingo, 6 = sábado
+    
+    let shouldSchedule = false;
+    
+    switch (alarm.repeat) {
+        case 'daily':
+            shouldSchedule = true;
+            break;
+        case 'weekdays':
+            shouldSchedule = dayOfWeek >= 1 && dayOfWeek <= 5;
+            break;
+        case 'weekends':
+            shouldSchedule = dayOfWeek === 0 || dayOfWeek === 6;
+            break;
+    }
+    
+    if (shouldSchedule) {
+        scheduleNotification(alarm);
+    }
+}
+
+// Inicializar alarmes existentes
+function initializeAlarms() {
+    requestNotificationPermission();
+    
+    alarms.forEach(alarm => {
+        if (alarm.active) {
+            scheduleNotification(alarm);
+        }
+    });
+}
+
+// Alarmes pré-definidos
+function addDefaultAlarms() {
+    const defaultAlarms = [
+        { time: '07:00', description: '🌅 Suplementos ao acordar', repeat: 'daily' },
+        { time: '08:30', description: '🍳 1ª Refeição - Manhã', repeat: 'daily' },
+        { time: '10:00', description: '🍌 2ª Refeição - Lanche', repeat: 'daily' },
+        { time: '12:30', description: '🍽️ 3ª Refeição - Almoço + Enzimas', repeat: 'daily' },
+        { time: '15:30', description: '🥤 4ª Refeição - Lanche', repeat: 'daily' },
+        { time: '19:00', description: '🌙 5ª Refeição - Jantar', repeat: 'daily' },
+        { time: '21:00', description: '💊 Suplementos pós-janta', repeat: 'daily' },
+        { time: '08:00', description: '💉 Aplicação - Segunda', repeat: 'once' },
+        { time: '08:00', description: '💉 Aplicação - Quinta', repeat: 'once' }
+    ];
+    
+    if (alarms.length === 0) {
+        defaultAlarms.forEach((alarm, index) => {
+            alarms.push({
+                id: Date.now() + index,
+                ...alarm,
+                active: true
+            });
+        });
+        
+        localStorage.setItem('alarms', JSON.stringify(alarms));
+        renderAlarms();
+        
+        alert('Alarmes padrão adicionados! 🎉\nVocê pode editá-los ou adicionar novos.');
+    }
+}
+
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    loadWorkoutData();
+    initializeAlarms();
+    
+    // Adicionar botão para alarmes padrão
+    setTimeout(() => {
+        if (alarms.length === 0) {
+            if (confirm('Deseja adicionar os alarmes padrão do plano alimentar?')) {
+                addDefaultAlarms();
+            }
+        }
+    }, 2000);
+});

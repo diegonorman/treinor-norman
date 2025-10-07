@@ -2,7 +2,7 @@
 import pandas as pd
 import json
 
-def convert_excel_to_json():
+def convert_excel_to_js():
     # Ler o arquivo Excel
     excel_file = 'treinor.xlsx'
     df = pd.read_excel(excel_file)
@@ -45,13 +45,15 @@ def convert_excel_to_json():
             
             workout_data[current_day]["exercises"].append(exercise)
     
-    # Salvar como JSON
-    with open('workout_data.json', 'w', encoding='utf-8') as f:
-        json.dump(workout_data, f, ensure_ascii=False, indent=2)
+    # Salvar como arquivo JavaScript
+    js_content = f"// Dados dos treinos embutidos no JavaScript\nconst WORKOUT_DATA = {json.dumps(workout_data, ensure_ascii=False, indent=2)};"
+    
+    with open('workout-data.js', 'w', encoding='utf-8') as f:
+        f.write(js_content)
     
     print(f"✅ Convertido com sucesso! {len(workout_data)} treinos encontrados.")
     for day, data in workout_data.items():
         print(f"   Dia {day}: {data['name']} - {len(data['exercises'])} exercícios")
 
 if __name__ == "__main__":
-    convert_excel_to_json()
+    convert_excel_to_js()
