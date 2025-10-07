@@ -334,24 +334,12 @@ function openVideo(url) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
         
-        // Para PWA, usar endpoint direto sem cookies
-        const embedUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${GOOGLE_API_KEY}`;
+        // Usar URL direta com API Key como parâmetro
+        const directUrl = `https://drive.google.com/uc?id=${fileId}&key=${GOOGLE_API_KEY}&export=download`;
         
         iframe.style.display = 'none';
         videoPlayer.style.display = 'block';
-        videoPlayer.src = embedUrl;
-        
-        videoPlayer.onerror = function() {
-            // Fallback: tentar URL simples do Drive
-            const simpleUrl = `https://drive.google.com/uc?id=${fileId}&export=download`;
-            videoPlayer.src = simpleUrl;
-            
-            videoPlayer.onerror = function() {
-                alert('⚠️ Vídeo não acessível no PWA. Torne o arquivo público no Drive.');
-                closeVideo();
-            };
-        };
-        
+        videoPlayer.src = directUrl;
         videoPlayer.load();
     } else {
         // YouTube continua igual
