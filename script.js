@@ -321,7 +321,8 @@ function initGoogleAuth() {
 }
 
 function loginGoogle() {
-    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=https://diegonorman.github.io/treinor-norman/&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token`;
+    const redirectUri = window.location.href.split('?')[0].split('#')[0];
+    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token`;
     window.location.href = authUrl;
 }
 
