@@ -308,13 +308,48 @@ document.addEventListener('DOMContentLoaded', function() {
 function showDay(day) {
     currentDay = day;
     
+    // Adicionar efeito de loading
+    const container = document.getElementById('workout-container');
+    container.style.opacity = '0.5';
+    container.style.transform = 'translateY(20px)';
+    
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     document.querySelector(`[onclick="showDay(${day})"]`).classList.add('active');
     
-    renderExercises(day);
-    updateProgress();
+    // Simular loading e depois mostrar conteúdo
+    setTimeout(() => {
+        renderExercises(day);
+        updateProgress();
+        
+        // Animar entrada do conteúdo
+        container.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+    }, 150);
+}
+
+// Função para obter ícone baseado no nome do exercício
+function getExerciseIcon(exerciseName) {
+    const name = exerciseName.toLowerCase();
+    
+    if (name.includes('agachamento') || name.includes('squat')) return '🏋️‍♂️';
+    if (name.includes('supino') || name.includes('peito') || name.includes('chest')) return '💪';
+    if (name.includes('rosca') || name.includes('bíceps') || name.includes('curl')) return '💪';
+    if (name.includes('tríceps') || name.includes('tricep')) return '🔥';
+    if (name.includes('ombro') || name.includes('shoulder') || name.includes('elevação')) return '🤸‍♂️';
+    if (name.includes('costas') || name.includes('puxada') || name.includes('remada')) return '🏃‍♂️';
+    if (name.includes('leg press') || name.includes('press')) return '🦵';
+    if (name.includes('extensora') || name.includes('flexora')) return '🦵';
+    if (name.includes('panturrilha') || name.includes('calf')) return '🦵';
+    if (name.includes('abdômen') || name.includes('abdominal') || name.includes('prancha')) return '🔥';
+    if (name.includes('mobilidade') || name.includes('alongamento')) return '🧘‍♂️';
+    if (name.includes('cadeira') || name.includes('máquina')) return '⚙️';
+    if (name.includes('barra') || name.includes('halteres')) return '🏋️';
+    if (name.includes('cardio') || name.includes('esteira') || name.includes('bike')) return '🏃‍♂️';
+    
+    return '💪'; // ícone padrão
 }
 
 function renderExercises(day) {
@@ -326,13 +361,17 @@ function renderExercises(day) {
     workout.exercises.forEach((exercise, index) => {
         const exerciseId = `${day}-${index}`;
         const isCompleted = completedExercises[exerciseId] || false;
+        const exerciseIcon = getExerciseIcon(exercise.name);
         
         const exerciseCard = document.createElement('div');
         exerciseCard.className = `exercise-card ${isCompleted ? 'completed' : ''}`;
         
         exerciseCard.innerHTML = `
             <div class="exercise-header">
-                <div class="exercise-name">${exercise.name}</div>
+                <div class="exercise-name">
+                    <span class="exercise-icon">${exerciseIcon}</span>
+                    ${exercise.name}
+                </div>
                 <div class="check-btn ${isCompleted ? 'checked' : ''}" onclick="toggleExercise('${exerciseId}')">
                     ${isCompleted ? '✓' : ''}
                 </div>
@@ -341,8 +380,8 @@ function renderExercises(day) {
                 <div class="sets-info">${exercise.sets}</div>
                 <div class="rest-info">Pausa: ${exercise.rest}</div>
                 <div>${exercise.details}</div>
-                ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">📹 Ver Vídeo</button>` : ''}
-                ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">⏱️ Cronômetro</button>` : ''}
+                ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">Ver Vídeo</button>` : ''}
+                ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">Cronômetro</button>` : ''}
             </div>
         `;
         
@@ -434,3 +473,97 @@ document.querySelector('h1').addEventListener('click', function() {
         updateProgress();
     }
 });
+
+// Efeito de confete quando completar exercício
+function createConfetti() {
+    const colors = ['#667eea', '#764ba2', '#4CAF50', '#FF6B6B', '#FFD93D'];
+    const confettiCount = 50;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.style.position = 'fixed';
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '-10px';
+        confetti.style.zIndex = '9999';
+        confetti.style.borderRadius = '50%';
+        confetti.style.pointerEvents = 'none';
+        
+        document.body.appendChild(confetti);
+        
+        const animation = confetti.animate([
+            { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+            { transform: `translateY(100vh) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+        ], {
+            duration: Math.random() * 2000 + 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+        
+        animation.onfinish = () => confetti.remove();
+    }
+}
+
+// Atualizar a função toggleExercise para incluir confete
+const originalToggleExercise = toggleExercise;
+function toggleExercise(exerciseId) {
+    const wasCompleted = completedExercises[exerciseId] || false;
+    
+    originalToggleExercise(exerciseId);
+    
+    // Se o exercício foi marcado como completo (não estava antes)
+    if (!wasCompleted && completedExercises[exerciseId]) {
+        createConfetti();
+        
+        // Vibração no celular se disponível
+        if (navigator.vibrate) {
+            navigator.vibrate([100, 50, 100]);
+        }
+    }
+}
+
+// Adicionar efeito de ondas ao clicar nos botões
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('nav-btn') || 
+        e.target.classList.contains('video-link') || 
+        e.target.classList.contains('timer-btn') ||
+        e.target.classList.contains('check-btn')) {
+        
+        const ripple = document.createElement('span');
+        const rect = e.target.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.style.position = 'absolute';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+        ripple.style.transform = 'scale(0)';
+        ripple.style.animation = 'ripple 0.6s linear';
+        ripple.style.pointerEvents = 'none';
+        
+        e.target.style.position = 'relative';
+        e.target.style.overflow = 'hidden';
+        e.target.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+});
+
+// Adicionar CSS para animação de ondas
+const rippleCSS = `
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+`;
+
+const style = document.createElement('style');
+style.textContent = rippleCSS;
+document.head.appendChild(style);
