@@ -308,29 +308,60 @@ function parseRestTime(restTime) {
     return match ? parseInt(match[1]) : 60;
 }
 
+// Configuração do Google Drive API
+const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI'; // Você precisa criar no Google Console
+let isGoogleLoggedIn = false;
+
+function initGoogleAuth() {
+    // Verificar se já está logado
+    const token = localStorage.getItem('google_access_token');
+    if (token) {
+        isGoogleLoggedIn = true;
+    }
+}
+
+function loginGoogle() {
+    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${window.location.origin}&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token`;
+    window.location.href = authUrl;
+}
+
 function openVideo(url) {
     const iframe = document.getElementById('video-frame');
     const videoPlayer = document.getElementById('video-player');
     
     if (url.includes('drive.google.com')) {
-        // Para Google Drive, tentar player HTML5 primeiro
         const fileId = url.split('/d/')[1]?.split('/')[0];
-        const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
         
-        iframe.style.display = 'none';
-        videoPlayer.style.display = 'block';
-        videoPlayer.src = directUrl;
-        
-        // Se não carregar em 3 segundos, abrir no Drive
-        videoPlayer.onerror = function() {
-            alert('⚠️ Vídeo não público no Drive. Abrindo no navegador...');
-            window.open(url, '_blank');
-            closeVideo();
-        };
-        
-        videoPlayer.load();
+        // Se logado no Google, usar API autenticada
+        if (isGoogleLoggedIn) {
+            const token = localStorage.getItem('google_access_token');
+            const apiUrl = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&access_token=${token}`;
+            
+            iframe.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            videoPlayer.src = apiUrl;
+            videoPlayer.load();
+        } else {
+            // Tentar sem autenticação primeiro
+            const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            
+            iframe.style.display = 'none';
+            videoPlayer.style.display = 'block';
+            videoPlayer.src = directUrl;
+            
+            videoPlayer.onerror = function() {
+                if (confirm('🔐 Vídeo privado. Fazer login no Google Drive?')) {
+                    loginGoogle();
+                } else {
+                    window.open(url, '_blank');
+                    closeVideo();
+                }
+            };
+            
+            videoPlayer.load();
+        }
     } else {
-        // Para YouTube, usar iframe
+        // YouTube continua igual
         let embedUrl = url;
         
         if (url.includes('youtube.com/watch')) {
@@ -351,6 +382,19 @@ function openVideo(url) {
     
     document.getElementById('video-modal').classList.remove('hidden');
 }
+
+// Verificar token na URL (retorno do OAuth)
+window.addEventListener('load', function() {
+    const hash = window.location.hash;
+    if (hash.includes('access_token')) {
+        const token = hash.split('access_token=')[1].split('&')[0];
+        localStorage.setItem('google_access_token', token);
+        isGoogleLoggedIn = true;
+        window.location.hash = ''; // Limpar URL
+        alert('✅ Login no Google Drive realizado!');
+    }
+    initGoogleAuth();
+});
 
 function closeVideo() {
     document.getElementById('video-frame').src = '';
