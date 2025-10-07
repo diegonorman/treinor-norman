@@ -313,13 +313,21 @@ function openVideo(url) {
     const videoPlayer = document.getElementById('video-player');
     
     if (url.includes('drive.google.com')) {
-        // Para Google Drive, usar player HTML5 nativo
+        // Para Google Drive, tentar player HTML5 primeiro
         const fileId = url.split('/d/')[1]?.split('/')[0];
         const directUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
         
         iframe.style.display = 'none';
         videoPlayer.style.display = 'block';
         videoPlayer.src = directUrl;
+        
+        // Se não carregar em 3 segundos, abrir no Drive
+        videoPlayer.onerror = function() {
+            alert('⚠️ Vídeo não público no Drive. Abrindo no navegador...');
+            window.open(url, '_blank');
+            closeVideo();
+        };
+        
         videoPlayer.load();
     } else {
         // Para YouTube, usar iframe
