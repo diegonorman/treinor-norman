@@ -463,19 +463,9 @@ main {
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
-.video-link::before {
-    content: '▶️';
-    font-size: 10px;
-}
-
 .timer-btn {
     background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
     box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
-}
-
-.timer-btn::before {
-    content: '⏱️';
-    font-size: 10px;
 }
 
 .video-link:hover, .timer-btn:hover {

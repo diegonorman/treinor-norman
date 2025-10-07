@@ -85,8 +85,12 @@ function renderExercises(day) {
         // Formatar séries e repetições
         const formatSets = (sets) => {
             if (!sets) return '';
-            // Substituir 'x' por '×' e melhorar formatação
-            return sets.replace(/x/gi, '×').replace(/\s+/g, ' ').trim();
+            // Melhorar formatação: substituir 'x' por '×' e limpar espaços
+            return sets
+                .replace(/x/gi, '×')
+                .replace(/\s*×\s*/g, '× ')
+                .replace(/\s+/g, ' ')
+                .trim();
         };
         
         exerciseCard.innerHTML = `
@@ -179,17 +183,50 @@ function startTimer(restTime) {
     const timeInSeconds = parseRestTime(restTime);
     if (timeInSeconds <= 0) return;
     
+    // Abrir cronômetro em nova janela igual ao vídeo
+    const timerWindow = window.open('', '_blank', 'width=300,height=200,resizable=no,scrollbars=no');
+    
+    timerWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Cronômetro - ${restTime}</title>
+            <style>
+                body { 
+                    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: center; 
+                    justify-content: center; 
+                    height: 100vh; 
+                    margin: 0; 
+                    background: linear-gradient(135deg, #667eea, #764ba2); 
+                    color: white;
+                }
+                .timer { font-size: 48px; font-weight: bold; margin-bottom: 20px; }
+                .label { font-size: 16px; opacity: 0.9; }
+            </style>
+        </head>
+        <body>
+            <div class="timer" id="timer">${timeInSeconds}</div>
+            <div class="label">Tempo de descanso</div>
+        </body>
+        </html>
+    `);
+    
     let remainingTime = timeInSeconds;
     
-    document.getElementById('timer-display').textContent = remainingTime;
-    document.getElementById('timer-modal').classList.remove('hidden');
-    
-    timerInterval = setInterval(() => {
+    const interval = setInterval(() => {
         remainingTime--;
-        document.getElementById('timer-display').textContent = remainingTime;
+        if (timerWindow.closed) {
+            clearInterval(interval);
+            return;
+        }
+        
+        timerWindow.document.getElementById('timer').textContent = remainingTime;
         
         if (remainingTime <= 0) {
-            clearInterval(timerInterval);
+            clearInterval(interval);
             
             // Vibrar quando acabar
             if (navigator.vibrate) {
@@ -197,7 +234,10 @@ function startTimer(restTime) {
             }
             
             alert('Tempo de descanso acabou! 💪');
-            closeTimer();
+            timerWindow.close();
+        }
+    }, 1000);
+}
         }
     }, 1000);
 }
