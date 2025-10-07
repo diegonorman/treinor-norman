@@ -25,6 +25,26 @@
         </header>
 
         <main>
+            <!-- Menu Principal no Topo -->
+            <nav class="top-nav">
+                <button class="top-nav-btn active" onclick="showSection('workout')">
+                    <span class="nav-icon">💪</span>
+                    <span class="nav-label">Treino</span>
+                </button>
+                <button class="top-nav-btn" onclick="showSection('nutrition')">
+                    <span class="nav-icon">🥗</span>
+                    <span class="nav-label">Dieta</span>
+                </button>
+                <button class="top-nav-btn" onclick="showSection('supplements')">
+                    <span class="nav-icon">💊</span>
+                    <span class="nav-label">Suplementos</span>
+                </button>
+                <button class="top-nav-btn" onclick="showSection('schedule')">
+                    <span class="nav-icon">⏰</span>
+                    <span class="nav-label">Horários</span>
+                </button>
+            </nav>
+
             <!-- Seção de Treinos -->
             <div id="workout-section" class="section active">
                 <div class="workout-nav">
@@ -288,24 +308,6 @@
             </div>
         </div>
 
-        <nav class="bottom-nav">
-            <button class="nav-btn active" onclick="showSection('workout')">
-                <span class="nav-icon">💪</span>
-                <span class="nav-label">Treino</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('nutrition')">
-                <span class="nav-icon">🥗</span>
-                <span class="nav-label">Dieta</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('supplements')">
-                <span class="nav-icon">💊</span>
-                <span class="nav-label">Suplementos</span>
-            </button>
-            <button class="nav-btn" onclick="showSection('schedule')">
-                <span class="nav-icon">⏰</span>
-                <span class="nav-label">Horários</span>
-            </button>
-        </nav>
     </div>
 
     <script src="workout-data.js"></script>

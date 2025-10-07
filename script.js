@@ -237,7 +237,7 @@ function createConfetti() {
 
 // Adicionar efeito de ondas ao clicar nos botões
 document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('nav-btn') || 
+    if (e.target.classList.contains('top-nav-btn') || 
         e.target.classList.contains('video-link') || 
         e.target.classList.contains('timer-btn') ||
         e.target.classList.contains('check-btn')) {
@@ -287,7 +287,7 @@ let alarms = JSON.parse(localStorage.getItem('alarms')) || [];
 function showSection(section) {
     // Esconder todas as seções
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.top-nav-btn').forEach(btn => btn.classList.remove('active'));
     
     // Mostrar seção selecionada
     document.getElementById(section + '-section').classList.add('active');
