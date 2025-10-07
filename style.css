@@ -210,7 +210,7 @@ main {
 
 .workout-nav {
     display: flex;
-    gap: 2px;
+    gap: 1px;
     margin-bottom: 15px;
     padding: 2px;
     overflow: visible;
@@ -236,6 +236,11 @@ main {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     transform: translateY(-1px);
+}
+
+.workout-day h2 {
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .exercise-card {
@@ -278,7 +283,9 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 4px 0;
 }
 
 .exercise-name {
@@ -295,6 +302,72 @@ main {
 .exercise-icon {
     font-size: 16px;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.card-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.expand-icon {
+    font-size: 12px;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.exercise-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 6px;
+}
+
+.sets-preview {
+    font-weight: 600;
+}
+
+.rest-preview {
+    font-style: italic;
+}
+
+.exercise-details {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.exercise-details.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+}
+
+.exercise-details:not(.collapsed) {
+    max-height: 300px;
+    opacity: 1;
+    margin-bottom: 8px;
+}
+
+.detail-row {
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.detail-row strong {
+    color: #333;
+    margin-right: 4px;
+}
+
+.exercise-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
 }
 
 .check-btn {
@@ -365,23 +438,29 @@ main {
     font-size: 14px;
 }
 
-.video-link, .timer-btn {
+.exercise-actions .video-link,
+.exercise-actions .timer-btn {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    padding: 6px 10px;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
-    padding: 6px 10px;
-    border-radius: 15px;
-    text-decoration: none;
-    font-size: 10px;
-    font-weight: 600;
-    margin-top: 8px;
-    margin-right: 6px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    flex: 1;
+    justify-content: center;
+}
+
+.exercise-actions .video-link:hover,
+.exercise-actions .timer-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .video-link::before {
@@ -1670,7 +1749,7 @@ main {
 
 @media (max-width: 480px) {
     .workout-nav {
-        gap: 4px;
+        gap: 2px;
     }
     
     .workout-btn {

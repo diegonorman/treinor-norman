@@ -82,22 +82,44 @@ function renderExercises(day) {
         const exerciseCard = document.createElement('div');
         exerciseCard.className = `exercise-card ${isCompleted ? 'completed' : ''}`;
         
+        // Formatar séries e repetições
+        const formatSets = (sets) => {
+            if (!sets) return '';
+            // Substituir 'x' por '×' e melhorar formatação
+            return sets.replace(/x/gi, '×').replace(/\s+/g, ' ').trim();
+        };
+        
         exerciseCard.innerHTML = `
-            <div class="exercise-header">
+            <div class="exercise-header" onclick="toggleCard(this)">
                 <div class="exercise-name">
                     <span class="exercise-icon">${exerciseIcon}</span>
                     ${exercise.name}
                 </div>
-                <div class="check-btn ${isCompleted ? 'checked' : ''}" onclick="toggleExercise('${exerciseId}')">
-                    ${isCompleted ? '✓' : ''}
+                <div class="card-controls">
+                    <span class="expand-icon">▼</span>
+                    <div class="check-btn ${isCompleted ? 'checked' : ''}" onclick="event.stopPropagation(); toggleExercise('${exerciseId}')">
+                        ${isCompleted ? '✓' : ''}
+                    </div>
                 </div>
             </div>
-            <div class="exercise-details">
-                <div class="sets-info">${exercise.sets}</div>
-                <div class="rest-info">Pausa: ${exercise.rest}</div>
-                <div>${exercise.details}</div>
-                ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">Ver Vídeo</button>` : ''}
-                ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">Cronômetro</button>` : ''}
+            <div class="exercise-summary">
+                <span class="sets-preview">${formatSets(exercise.sets)}</span>
+                <span class="rest-preview">${exercise.rest}</span>
+            </div>
+            <div class="exercise-details collapsed">
+                <div class="detail-row">
+                    <strong>Séries:</strong> ${formatSets(exercise.sets)}
+                </div>
+                <div class="detail-row">
+                    <strong>Pausa:</strong> ${exercise.rest}
+                </div>
+                <div class="detail-row">
+                    <strong>Observações:</strong> ${exercise.details || 'Progressão de carga.'}
+                </div>
+                <div class="exercise-actions">
+                    ${exercise.video ? `<button class="video-link" onclick="openVideo('${exercise.video}')">📹 Ver Vídeo</button>` : ''}
+                    ${exercise.rest !== '-' && exercise.rest !== '' ? `<button class="timer-btn" onclick="startTimer('${exercise.rest}')">⏱️ Cronômetro</button>` : ''}
+                </div>
             </div>
         `;
         
@@ -123,6 +145,15 @@ function toggleExercise(exerciseId) {
             navigator.vibrate([100, 50, 100]);
         }
     }
+}
+
+function toggleCard(header) {
+    const card = header.parentElement;
+    const details = card.querySelector('.exercise-details');
+    const icon = card.querySelector('.expand-icon');
+    
+    details.classList.toggle('collapsed');
+    icon.textContent = details.classList.contains('collapsed') ? '▼' : '▲';
 }
 
 function updateProgress() {
