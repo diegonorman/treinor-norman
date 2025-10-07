@@ -14,7 +14,10 @@
 <body>
     <div class="container">
         <header>
-            <h1>💪 Meu Treino</h1>
+            <div class="header-info">
+                <div class="app-title">💪 GH Personal</div>
+                <div class="user-name">Norman Training</div>
+            </div>
             <div class="progress-bar">
                 <div class="progress" id="progress"></div>
             </div>
@@ -43,11 +46,26 @@
         </div>
 
         <nav class="bottom-nav">
-            <button class="nav-btn active" onclick="showDay(1)"><span>💪 1</span></button>
-            <button class="nav-btn" onclick="showDay(2)"><span>🔥 2</span></button>
-            <button class="nav-btn" onclick="showDay(3)"><span>⚡ 3</span></button>
-            <button class="nav-btn" onclick="showDay(4)"><span>🚀 4</span></button>
-            <button class="nav-btn" onclick="showDay(5)"><span>🏆 5</span></button>
+            <button class="nav-btn active" onclick="showDay(1)">
+                <span class="nav-icon">🔥</span>
+                <span class="nav-label">Dia 1</span>
+            </button>
+            <button class="nav-btn" onclick="showDay(2)">
+                <span class="nav-icon">💪</span>
+                <span class="nav-label">Dia 2</span>
+            </button>
+            <button class="nav-btn" onclick="showDay(3)">
+                <span class="nav-icon">⚡</span>
+                <span class="nav-label">Dia 3</span>
+            </button>
+            <button class="nav-btn" onclick="showDay(4)">
+                <span class="nav-icon">🚀</span>
+                <span class="nav-label">Dia 4</span>
+            </button>
+            <button class="nav-btn" onclick="showDay(5)">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label">Dia 5</span>
+            </button>
         </nav>
     </div>
 

@@ -56,19 +56,31 @@ header::before {
     50% { transform: translate(-50%, -50%) rotate(180deg); }
 }
 
-h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+.header-info {
     position: relative;
     z-index: 1;
+    margin-bottom: 20px;
+}
+
+.app-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: textShine 3s ease-in-out infinite;
+    margin-bottom: 5px;
+}
+
+.user-name {
+    font-size: 14px;
+    opacity: 0.9;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 @keyframes textShine {
@@ -496,16 +508,31 @@ main {
 
 .nav-btn {
     flex: 1;
-    padding: 20px 16px;
+    padding: 15px 8px;
     border: none;
     background: transparent;
     color: #666;
     font-weight: 600;
-    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.nav-label {
+    font-size: 11px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
 }
 
 .nav-btn::before {
@@ -529,14 +556,17 @@ main {
     transform: translateY(-3px);
 }
 
-.nav-btn span {
-    position: relative;
-    z-index: 1;
+.nav-btn.active .nav-icon {
+    transform: scale(1.2);
 }
 
 .nav-btn:hover:not(.active) {
     background: rgba(102, 126, 234, 0.1);
     color: #667eea;
+}
+
+.nav-btn:hover:not(.active) .nav-icon {
+    transform: scale(1.1);
 }
 
 .rest-info {
