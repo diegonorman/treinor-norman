@@ -321,9 +321,22 @@ function initGoogleAuth() {
 }
 
 function loginGoogle() {
-    const redirectUri = window.location.href.split('?')[0].split('#')[0];
-    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token`;
-    window.location.href = authUrl;
+    const authUrl = `https://accounts.google.com/oauth/authorize?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent('https://diegonorman.github.io/treinor-norman/')}&scope=https://www.googleapis.com/auth/drive.readonly&response_type=token&prompt=select_account`;
+    
+    // Abrir em popup para evitar 404
+    const popup = window.open(authUrl, 'google-auth', 'width=500,height=600');
+    
+    // Monitorar o popup
+    const checkClosed = setInterval(() => {
+        if (popup.closed) {
+            clearInterval(checkClosed);
+            // Verificar se token foi salvo
+            if (localStorage.getItem('google_access_token')) {
+                isGoogleLoggedIn = true;
+                location.reload(); // Recarregar para aplicar login
+            }
+        }
+    }, 1000);
 }
 
 function openVideo(url) {
