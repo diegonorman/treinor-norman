@@ -148,6 +148,9 @@ function toggleExercise(exerciseId) {
     if (!wasCompleted && completedExercises[exerciseId]) {
         createConfetti();
         
+        // Mostrar notificação melhorada com ícone do braço
+        showSaveNotification();
+        
         // Vibração no celular se disponível
         if (navigator.vibrate) {
             navigator.vibrate([100, 50, 100]);
@@ -772,4 +775,76 @@ function showIOSInstructions() {
 💡 Use este app como checklist do seu plano.`;
     
     alert(instructions);
+}
+
+// Função para mostrar notificação melhorada quando salvar exercício
+function showSaveNotification() {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #4CAF50, #45a049);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 15px;
+        z-index: 1001;
+        font-weight: 600;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        animation: saveNotificationPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    `;
+    
+    notification.innerHTML = `
+        <div style="font-size: 32px; margin-bottom: 8px;">💪</div>
+        <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">Exercício Salvo!</div>
+        <div style="font-size: 12px; opacity: 0.9;">GH Personal</div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Remover após 2 segundos
+    setTimeout(() => {
+        notification.style.animation = 'saveNotificationOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 2000);
+}
+
+// Adicionar CSS para animações da notificação
+const saveNotificationCSS = `
+@keyframes saveNotificationPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes saveNotificationOut {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+}
+`;
+
+// Adicionar CSS ao documento se ainda não foi adicionado
+if (!document.querySelector('#save-notification-styles')) {
+    const style = document.createElement('style');
+    style.id = 'save-notification-styles';
+    style.textContent = saveNotificationCSS;
+    document.head.appendChild(style);
 }
