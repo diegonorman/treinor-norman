@@ -48,11 +48,11 @@
             <!-- Seção de Treinos -->
             <div id="workout-section" class="section active">
                 <div class="workout-nav">
-                    <button class="workout-btn active" onclick="showDay(1)">🔥 Dia 1</button>
-                    <button class="workout-btn" onclick="showDay(2)">💪 Dia 2</button>
-                    <button class="workout-btn" onclick="showDay(3)">⚡ Dia 3</button>
-                    <button class="workout-btn" onclick="showDay(4)">🚀 Dia 4</button>
-                    <button class="workout-btn" onclick="showDay(5)">🏆 Dia 5</button>
+                    <button class="workout-btn active" onclick="showDay(1)">🔥 1</button>
+                    <button class="workout-btn" onclick="showDay(2)">💪 2</button>
+                    <button class="workout-btn" onclick="showDay(3)">⚡ 3</button>
+                    <button class="workout-btn" onclick="showDay(4)">🚀 4</button>
+                    <button class="workout-btn" onclick="showDay(5)">🏆 5</button>
                 </div>
                 <div class="workout-day" id="workout-container">
                     <!-- Exercícios serão carregados aqui -->
@@ -234,12 +234,34 @@
             <!-- Seção de Horários -->
             <div id="schedule-section" class="section">
                 <div class="schedule-content">
+                    <div class="info-card">
+                        <h3>⚠️ Importante - Alarmes no iOS</h3>
+                        <p style="font-size: 11px; line-height: 1.4; margin-bottom: 8px;">
+                            <strong>Limitação:</strong> PWAs no iOS não funcionam em background. 
+                            Os alarmes abaixo são apenas referência.
+                        </p>
+                        <p style="font-size: 11px; line-height: 1.4; color: #4CAF50;">
+                            <strong>Solução:</strong> Configure alarmes reais no app Relógio do iOS 
+                            usando os horários abaixo como referência.
+                        </p>
+                        <button onclick="showIOSInstructions()" style="
+                            background: linear-gradient(135deg, #4CAF50, #45a049);
+                            color: white;
+                            border: none;
+                            padding: 6px 12px;
+                            border-radius: 8px;
+                            font-size: 10px;
+                            margin-top: 8px;
+                            cursor: pointer;
+                        ">📱 Como Configurar no iOS</button>
+                    </div>
+
                     <div class="alarm-card">
-                        <h3>⏰ Alarmes Configurados</h3>
+                        <h3>⏰ Horários de Referência</h3>
                         <div class="alarm-list" id="alarm-list">
                             <!-- Alarmes serão carregados aqui -->
                         </div>
-                        <button class="add-alarm-btn" onclick="showAlarmModal()">+ Adicionar Alarme</button>
+                        <button class="add-alarm-btn" onclick="showAlarmModal()">+ Adicionar Horário</button>
                     </div>
 
                     <div class="info-card">

@@ -210,25 +210,26 @@ main {
 
 .workout-nav {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     margin-bottom: 15px;
-    overflow-x: auto;
     padding: 2px;
-    -webkit-overflow-scrolling: touch;
+    overflow: visible;
 }
 
 .workout-btn {
     flex: 1;
-    min-width: 60px;
-    padding: 8px 6px;
+    min-width: 0;
+    padding: 6px 2px;
     border: none;
     background: rgba(255, 255, 255, 0.7);
-    border-radius: 12px;
-    font-size: 10px;
+    border-radius: 10px;
+    font-size: 9px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .workout-btn.active {

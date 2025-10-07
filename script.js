@@ -517,3 +517,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 2000);
 });
+// Instruções para iOS
+function showIOSInstructions() {
+    const instructions = `📱 COMO CONFIGURAR ALARMES REAIS NO iOS:
+
+1️⃣ ALARMES NATIVOS (RECOMENDADO):
+• Abra: Relógio → Alarme
+• Toque: + (adicionar)
+• Configure cada horário:
+
+🌅 07:00 - Suplementos ao acordar
+🍳 08:30 - 1ª Refeição - Manhã  
+🍌 10:00 - 2ª Refeição - Lanche
+🍽️ 12:30 - Almoço + Enzimas
+🥤 15:30 - 4ª Refeição - Lanche
+🌙 19:00 - Jantar
+💊 21:00 - Suplementos pós-janta
+💉 08:00 - Aplicação (Seg/Qui)
+
+2️⃣ LEMBRETES:
+• App Lembretes → Nova Lista
+• Nome: "GH Personal"
+• Adicionar com horário específico
+
+3️⃣ SIRI (MAIS RÁPIDO):
+• "Ei Siri, me lembre de tomar suplementos às 7 da manhã todos os dias"
+• "Ei Siri, me lembre do almoço às 12h30"
+
+✅ ASSIM FUNCIONARÁ SEMPRE, mesmo com app fechado!
+
+💡 Use este app como checklist do seu plano.`;
+    
+    alert(instructions);
+}
