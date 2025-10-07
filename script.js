@@ -1,53 +1,49 @@
-const workoutData = {
-    1: {
-        name: "DIA 1 - Quadríceps",
-        exercises: [
-            {
-                name: "MOBILIDADE TORNOZELO",
-                sets: "2x15",
-                rest: "15 seg",
-                details: "",
-                video: "https://www.youtube.com/shorts/PPoaqzaHtwc?feature=share"
-            },
-            {
-                name: "CADEIRA ABDUTORA",
-                sets: "3x8-12",
-                rest: "60 seg",
-                details: "1 seg de isometria no pico. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1ebbyK2hgtynVITTnDWwo_dorwmtNlT8n/view?usp=drive_link"
-            },
-            {
-                name: "AGACHAMENTO SMITH",
-                sets: "4x6-10",
-                rest: "60 seg",
-                details: "Progressão de carga.",
-                video: "https://drive.google.com/file/d/1ORuuq6XyExfFtA8cPyc93UMphPPGcrOn/view?usp=drive_link"
-            },
-            {
-                name: "AGACHAMENTO HACK",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Não descolar a lombar. Força na ponta dos pés.",
-                video: "https://drive.google.com/file/d/12J_l0zIqQ--aTiWuOo1rTThA4sX9NaHB/view?usp=drive_link"
-            },
-            {
-                name: "LEG PRESS",
-                sets: "4x12-15",
-                rest: "60 seg",
-                details: "Não descolar a lombar. Força na ponta dos pés.",
-                video: "https://drive.google.com/file/d/1Mr4tetd9oDUkhEryWjvdsUJhiU3CM-WX/view?usp=drive_link"
-            },
-            {
-                name: "CADEIRA EXTENSORA",
-                sets: "4x15-20/10-15/8-12/6-10",
-                rest: "60 seg",
-                details: "Pirâmide. Progressão de carga.",
-                video: "https://drive.google.com/file/d/1hftxb2lGCRkW7EwXxqlz3rNSEteMg4_F/view?usp=drive_link"
+// Dados dos treinos - serão carregados do JSON
+let workoutData = {};
+let completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
+let currentDay = 1;
+let timerInterval;
+
+// Carregar dados do JSON
+async function loadWorkoutData() {
+    try {
+        const response = await fetch('workout_data.json');
+        if (!response.ok) {
+            throw new Error('Erro ao carregar dados dos treinos');
+        }
+        workoutData = await response.json();
+        
+        // Inicializar app após carregar dados
+        showDay(1);
+        updateProgress();
+        
+        console.log('✅ Dados dos treinos carregados com sucesso!');
+    } catch (error) {
+        console.error('❌ Erro ao carregar dados:', error);
+        
+        // Fallback para dados básicos se não conseguir carregar
+        workoutData = {
+            1: {
+                name: "Carregando...",
+                exercises: [{
+                    name: "Erro ao carregar dados do Excel",
+                    sets: "Verifique se o arquivo workout_data.json existe",
+                    rest: "",
+                    details: "Recarregue a página ou execute o script convert_excel.py",
+                    video: ""
+                }]
             }
-        ]
-    },
-    2: {
-        name: "DIA 2 - Peito/Abdômen",
+        };
+        
+        showDay(1);
+        updateProgress();
+    }
+}
+
+// Inicializar quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    loadWorkoutData();
+});
         exercises: [
             {
                 name: "ALONGAMENTO PEITORAL MENOR",
@@ -292,18 +288,10 @@ const workoutData = {
     }
 };
 
-let currentDay = 1;
-let completedExercises = JSON.parse(localStorage.getItem('completedExercises')) || {};
-let timerInterval;
-
-document.addEventListener('DOMContentLoaded', function() {
-    showDay(1);
-    
-    // Registrar Service Worker
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
-    }
-});
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+}
 
 function showDay(day) {
     currentDay = day;
