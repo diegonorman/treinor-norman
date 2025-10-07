@@ -351,8 +351,14 @@ function openVideo(url) {
             videoPlayer.src = directUrl;
             
             videoPlayer.onerror = function() {
-                if (confirm('🔐 Vídeo privado. Fazer login no Google Drive?')) {
-                    loginGoogle();
+                if (!localStorage.getItem('google_login_attempted')) {
+                    if (confirm('🔐 Vídeo privado. Fazer login no Google Drive?')) {
+                        localStorage.setItem('google_login_attempted', 'true');
+                        loginGoogle();
+                    } else {
+                        window.open(url, '_blank');
+                        closeVideo();
+                    }
                 } else {
                     window.open(url, '_blank');
                     closeVideo();
@@ -390,6 +396,7 @@ window.addEventListener('load', function() {
     if (hash.includes('access_token')) {
         const token = hash.split('access_token=')[1].split('&')[0];
         localStorage.setItem('google_access_token', token);
+        localStorage.setItem('google_login_attempted', 'true');
         isGoogleLoggedIn = true;
         window.location.hash = ''; // Limpar URL
         alert('✅ Login no Google Drive realizado!');
