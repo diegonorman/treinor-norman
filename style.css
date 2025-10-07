@@ -69,6 +69,11 @@ header::before {
     margin-bottom: 15px;
 }
 
+.app-icon {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
 .app-title {
     font-size: 20px;
     font-weight: 700;
