@@ -313,19 +313,20 @@ function openVideo(url) {
     
     if (url.includes('youtube.com/watch')) {
         const videoId = url.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     } else if (url.includes('youtube.com/shorts')) {
         const videoId = url.split('/shorts/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     } else if (url.includes('youtu.be')) {
         const videoId = url.split('youtu.be/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&controls=1`;
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     } else if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
     }
     
-    document.getElementById('video-frame').src = embedUrl;
+    const iframe = document.getElementById('video-frame');
+    iframe.src = embedUrl;
     document.getElementById('video-modal').classList.remove('hidden');
 }
 
