@@ -1926,7 +1926,8 @@ main {
 
 .week-buttons {
     display: flex;
-    gap: 15px;
+    flex-direction: column;
+    gap: 10px;
     /* Adicionar margem inferior para iPhone PWA */
     margin-bottom: max(10px, env(safe-area-inset-bottom));
     padding-bottom: 5px;
@@ -1936,11 +1937,12 @@ main {
     background: linear-gradient(135deg, #2196F3, #1976D2);
     color: white;
     border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .history-btn:hover {
@@ -2061,11 +2063,12 @@ main {
     background: linear-gradient(135deg, #9c27b0, #7b1fa2);
     color: white;
     border: none;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 11px;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 100%;
 }
 
 .reset-week-btn:hover {
