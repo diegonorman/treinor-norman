@@ -322,7 +322,7 @@ function openVideo(url) {
         embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
     } else if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
-        embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+        embedUrl = `https://drive.google.com/file/d/${fileId}/preview?usp=embed_facebook`;
     }
     
     const iframe = document.getElementById('video-frame');
