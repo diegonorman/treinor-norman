@@ -334,12 +334,16 @@ function openVideo(url) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         const GOOGLE_API_KEY = 'AIzaSyBEHWdThrIdiILOjrJNvd9cO0Xjub51Ia4';
         
-        // Usar iframe embed com API Key para PWA no iPhone
-        const embedUrl = `https://drive.google.com/file/d/${fileId}/preview?key=${GOOGLE_API_KEY}`;
+        // Usar iframe embed com API Key e aceitar cookies automaticamente
+        const embedUrl = `https://drive.google.com/file/d/${fileId}/preview?key=${GOOGLE_API_KEY}&usp=embed_facebook`;
         
         videoPlayer.style.display = 'none';
         iframe.style.display = 'block';
         iframe.src = embedUrl;
+        
+        // Configurar iframe para aceitar cookies
+        iframe.setAttribute('allow', 'autoplay; encrypted-media');
+        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
     } else {
         // YouTube continua igual
         let embedUrl = url;
