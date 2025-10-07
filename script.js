@@ -309,14 +309,26 @@ function parseRestTime(restTime) {
 }
 
 function openVideo(url) {
+    // Detectar se é PWA no iOS
+    const isIOSPWA = window.navigator.standalone === true;
+    
+    if (isIOSPWA && (url.includes('youtube.com') || url.includes('youtu.be'))) {
+        // No iOS PWA, abrir diretamente no app do YouTube
+        window.open(url, '_blank');
+        return;
+    }
+    
     let embedUrl = url;
     
     if (url.includes('youtube.com/watch')) {
         const videoId = url.split('v=')[1]?.split('&')[0];
-        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
     } else if (url.includes('youtube.com/shorts')) {
         const videoId = url.split('/shorts/')[1]?.split('?')[0];
-        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    } else if (url.includes('youtu.be')) {
+        const videoId = url.split('youtu.be/')[1]?.split('?')[0];
+        embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
     } else if (url.includes('drive.google.com')) {
         const fileId = url.split('/d/')[1]?.split('/')[0];
         embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
