@@ -184,31 +184,61 @@ function startTimer(restTime) {
     const timeInSeconds = parseRestTime(restTime);
     if (timeInSeconds <= 0) return;
     
-    // Fechar vídeo se estiver aberto
-    closeVideo();
+    // Remover cronômetro existente se houver
+    const existing = document.getElementById('floating-timer');
+    if (existing) existing.remove();
     
-    // Mostrar modal do cronômetro
-    document.getElementById('timer-display').textContent = formatTime(timeInSeconds);
-    document.getElementById('timer-modal').classList.remove('hidden');
+    // Criar cronômetro flutuante
+    const timer = document.createElement('div');
+    timer.id = 'floating-timer';
+    timer.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 100px;
+        background: rgba(0, 0, 0, 0.9);
+        color: white;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        font-family: Arial, sans-serif;
+    `;
+    
+    timer.innerHTML = `
+        <div style="font-size: 24px; font-weight: bold; color: #4CAF50;">${formatTime(timeInSeconds)}</div>
+        <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Descanso</div>
+        <button onclick="this.parentElement.remove(); clearInterval(timerInterval);" style="
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        ">×</button>
+    `;
+    
+    document.body.appendChild(timer);
     
     let remainingTime = timeInSeconds;
     
     timerInterval = setInterval(() => {
         remainingTime--;
-        document.getElementById('timer-display').textContent = formatTime(remainingTime);
+        const display = timer.querySelector('div');
+        if (display) {
+            display.textContent = formatTime(remainingTime);
+        }
         
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
-            
-            // Vibrar quando acabar
-            if (navigator.vibrate) {
-                navigator.vibrate([200, 100, 200, 100, 200]);
-            }
-            
-            // Fechar automaticamente
-            closeTimer();
-            
-            // Mostrar notificação
+            timer.remove();
             showNotification('Tempo de descanso acabou! 💪');
         }
     }, 1000);
@@ -223,7 +253,8 @@ function formatTime(seconds) {
 
 function closeTimer() {
     clearInterval(timerInterval);
-    document.getElementById('timer-modal').classList.add('hidden');
+    const timer = document.getElementById('floating-timer');
+    if (timer) timer.remove();
 }
 
 function showNotification(message) {
@@ -582,7 +613,26 @@ function addDefaultAlarms() {
     }
 }
 
-// Inicializar quando a página carregar
+function resetWorkout() {
+    if (confirm('Deseja reiniciar o treino atual? Todos os exercícios serão desmarcados.')) {
+        // Limpar apenas os exercícios do dia atual
+        const workout = workoutData[currentDay];
+        workout.exercises.forEach((exercise, index) => {
+            const exerciseId = `${currentDay}-${index}`;
+            delete completedExercises[exerciseId];
+        });
+        
+        localStorage.setItem('completedExercises', JSON.stringify(completedExercises));
+        
+        // Atualizar a tela
+        renderExercises(currentDay);
+        updateProgress();
+        
+        // Mostrar feedback
+        createConfetti();
+        showNotification('Treino reiniciado! 🔄');
+    }
+}
 document.addEventListener('DOMContentLoaded', function() {
     loadWorkoutData();
     initializeAlarms();
