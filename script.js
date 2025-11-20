@@ -357,6 +357,15 @@ function openVideo(url) {
         videoPlayer.style.display = 'none';
         iframe.style.display = 'block';
         iframe.src = embedUrl;
+        
+        // Fix para iOS - força play após carregar
+        iframe.onload = function() {
+            setTimeout(() => {
+                try {
+                    iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                } catch(e) {}
+            }, 1000);
+        };
     }
     
     document.getElementById('video-modal').classList.remove('hidden');
